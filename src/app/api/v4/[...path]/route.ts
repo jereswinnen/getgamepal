@@ -35,13 +35,17 @@ async function getAccessToken() {
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: { path: string[] } }
 ) {
-  console.log("Received request:");
-  console.log("Path:", params.path);
-  console.log("Method:", request.method);
-
   try {
+    // Await the entire params object
+    const params = await context.params;
+    const pathParams = params.path;
+
+    console.log("Received request:");
+    console.log("Path:", pathParams);
+    console.log("Method:", request.method);
+
     const body = await request.text();
     console.log("Body:", body);
 
@@ -56,7 +60,7 @@ export async function POST(
       );
     }
 
-    const endpoint = params.path.join("/");
+    const endpoint = pathParams.join("/");
     const igdbResponse = await fetch(`https://api.igdb.com/v4/${endpoint}`, {
       method: "POST",
       headers: {
@@ -89,13 +93,27 @@ export async function POST(
 // Health check endpoint
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: { path: string[] } }
 ) {
-  // If the path is "health", return a health check response
-  if (params.path.length === 1 && params.path[0] === "health") {
-    return NextResponse.json({ status: "OK", message: "Server is healthy" });
-  }
+  try {
+    // Await the entire params object
+    const params = await context.params;
+    const pathParams = params.path;
 
-  // Otherwise, return a method not allowed response
-  return NextResponse.json({ message: "Method not allowed" }, { status: 405 });
+    // If the path is "health", return a health check response
+    if (pathParams.length === 1 && pathParams[0] === "health") {
+      return NextResponse.json({ status: "OK", message: "Server is healthy" });
+    }
+
+    // Otherwise, return a method not allowed response
+    return NextResponse.json(
+      { message: "Method not allowed" },
+      { status: 405 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "An error occurred", error: String(error) },
+      { status: 500 }
+    );
+  }
 }
