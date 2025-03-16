@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import axios from "axios";
 import Layout from "@/components/Layout";
 
 // Define the Game type
@@ -23,18 +22,18 @@ async function getGameData(igdbId: string): Promise<Game | null> {
     const baseUrl = `${protocol}://${host}`;
 
     // Make the request to our own API endpoint
-    const response = await axios.post(
-      `${baseUrl}/api/v4/games`,
-      `fields name, cover.url, summary; where id = ${igdbId}; limit 1;`,
-      {
-        headers: {
-          "Content-Type": "text/plain",
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v4/games`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      body: `fields name, cover.url, summary; where id = ${igdbId}; limit 1;`,
+    });
+
+    const data = await response.json();
 
     // Return the first game or null if no games were found
-    return response.data[0] || null;
+    return data[0] || null;
   } catch (error) {
     console.error("Error fetching game data:", error);
     return null;

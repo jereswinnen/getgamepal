@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
 
 // IGDB API credentials
 const CLIENT_ID = process.env.IGDB_CLIENT_ID;
@@ -14,11 +13,16 @@ async function getAccessToken() {
   }
 
   try {
-    const response = await axios.post(
-      `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`
+    const response = await fetch(
+      `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`,
+      {
+        method: "POST",
+      }
     );
-    accessToken = response.data.access_token;
-    tokenExpiry = Date.now() + response.data.expires_in * 1000;
+
+    const data = await response.json();
+    accessToken = data.access_token;
+    tokenExpiry = Date.now() + data.expires_in * 1000;
     return accessToken;
   } catch (error: any) {
     console.error(
@@ -44,21 +48,29 @@ export async function POST(
     const token = await getAccessToken();
     console.log("Got access token:", token);
 
+    // Check if CLIENT_ID exists before making the request
+    if (!CLIENT_ID) {
+      return NextResponse.json(
+        { message: "Server configuration error" },
+        { status: 500 }
+      );
+    }
+
     const endpoint = params.path.join("/");
-    const igdbResponse = await axios({
-      url: `https://api.igdb.com/v4/${endpoint}`,
+    const igdbResponse = await fetch(`https://api.igdb.com/v4/${endpoint}`, {
       method: "POST",
       headers: {
-        "Client-ID": CLIENT_ID as string,
+        "Client-ID": CLIENT_ID,
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
         "Content-Type": "text/plain",
       },
-      data: body,
+      body: body,
     });
 
-    console.log("IGDB Response:", igdbResponse.data);
-    return NextResponse.json(igdbResponse.data);
+    const data = await igdbResponse.json();
+    console.log("IGDB Response:", data);
+    return NextResponse.json(data);
   } catch (error: any) {
     console.error(
       "Error:",

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import axios from "axios";
 import Layout from "@/components/Layout";
 
 // Define the Game type
@@ -22,20 +21,20 @@ async function getPopularGames(): Promise<Game[]> {
     const baseUrl = `${protocol}://${host}`;
 
     // Make the request to our own API endpoint
-    const response = await axios.post(
-      `${baseUrl}/api/v4/games`,
-      `fields name, cover.url;
+    const response = await fetch(`${baseUrl}/api/v4/games`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      body: `fields name, cover.url;
        where rating > 80 & cover != null;
        sort rating desc;
        limit 12;`,
-      {
-        headers: {
-          "Content-Type": "text/plain",
-        },
-      }
-    );
+    });
 
-    return response.data || [];
+    const data = await response.json();
+
+    return data || [];
   } catch (error) {
     console.error("Error fetching popular games:", error);
     return [];
