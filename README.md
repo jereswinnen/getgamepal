@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GamePal
+
+GamePal is a Next.js application that serves as both a marketing website and an IGDB API proxy for the GamePal iOS app. It allows users to browse games, view game details, and provides a secure way to access the IGDB API.
+
+## Features
+
+- **Marketing Website**: Showcase the GamePal iOS app and its features
+- **IGDB API Proxy**: Securely proxy requests to the IGDB API
+- **Game Browser**: Browse popular games from the IGDB database
+- **Game Details**: View detailed information about specific games
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.0.0 or later
+- pnpm (recommended) or npm
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/getgamepal.git
+   cd getgamepal
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Create a `.env.local` file based on the `.env.local.example` file:
+
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+4. Add your IGDB API credentials to the `.env.local` file:
+
+   ```
+   IGDB_CLIENT_ID=your_client_id_here
+   IGDB_CLIENT_SECRET=your_client_secret_here
+   ```
+
+   You can obtain these credentials by registering at the [Twitch Developer Portal](https://dev.twitch.tv/console/apps).
+
+### Development
+
+Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Build the application for production:
 
-## Learn More
+```bash
+pnpm build
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the production server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment on Vercel
 
-## Deploy on Vercel
+The easiest way to deploy this Next.js app is to use the [Vercel Platform](https://vercel.com).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push your code to a Git repository (GitHub, GitLab, BitBucket)
+2. Import the project to Vercel
+3. Add your environment variables (IGDB_CLIENT_ID and IGDB_CLIENT_SECRET)
+4. Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Usage
+
+The API proxy is available at `/api/v4/[endpoint]`. For example, to query games:
+
+```
+POST /api/v4/games
+Content-Type: text/plain
+
+fields name, cover.url, summary;
+where id = 1942;
+limit 1;
+```
+
+For more information about the IGDB API, refer to the [official documentation](https://api-docs.igdb.com/).
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
