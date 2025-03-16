@@ -1,9 +1,8 @@
 import Link from "next/link";
-import Layout from "@/components/Layout";
 
 export default function Home() {
   return (
-    <Layout>
+    <>
       <section className="max-w-4xl mx-auto text-center mb-16">
         <h2 className="text-4xl font-bold mb-6">
           Your Ultimate Gaming Companion
@@ -59,6 +58,6 @@ export default function Home() {
           information about thousands of games.
         </p>
       </section>
-    </Layout>
+    </>
   );
 }

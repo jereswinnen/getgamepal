@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import Layout from "@/components/Layout";
 
 // Define the Game type
 interface Game {
@@ -53,7 +52,7 @@ export default async function GamePage({
     : null;
 
   return (
-    <Layout>
+    <>
       {game ? (
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
@@ -108,6 +107,6 @@ export default async function GamePage({
           </Link>
         </div>
       )}
-    </Layout>
+    </>
   );
 }
