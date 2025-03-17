@@ -3,6 +3,7 @@ import GameCover from "@/components/GameCover";
 import GameScreenshots from "@/components/GameScreenshots";
 import GameVideos from "@/components/GameVideos";
 import GameDetails from "@/components/GameDetails";
+import GameCoverBackground from "@/components/GameCoverBackground";
 
 // Define the Game type
 interface Game {
@@ -116,74 +117,81 @@ export default async function GamePage({
   return (
     <>
       {game ? (
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8 mb-8">
-            <div className="w-full md:w-1/3">
-              <GameCover
-                coverUrl={game.cover?.url}
-                gameName={game.name}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
+        <>
+          <GameCoverBackground
+            coverUrl={game.cover?.url}
+            gameName={game.name}
+          />
+
+          <div className="relative z-10 mx-auto">
+            <div className="flex flex-col md:flex-row gap-8 mb-8">
+              <div className="w-full md:w-1/3">
+                <GameCover
+                  coverUrl={game.cover?.url}
+                  gameName={game.name}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+              </div>
+
+              <div className="w-full md:w-2/3">
+                <h1 className="text-3xl font-bold mb-4">{game.name}</h1>
+
+                {game.summary && (
+                  <div className="mb-6">
+                    <h2 className="text-xl font-semibold mb-2">Summary</h2>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      {game.summary}
+                    </p>
+                  </div>
+                )}
+
+                <GameDetails
+                  platforms={game.platforms}
+                  developers={getDevelopers(game)}
+                  publishers={getPublishers(game)}
+                  releaseDate={game.first_release_date}
+                  genres={game.genres}
+                  gameModes={game.game_modes}
+                  igdbId={game.id}
+                  url={game.url}
+                />
+              </div>
             </div>
 
-            <div className="w-full md:w-2/3">
-              <h1 className="text-3xl font-bold mb-4">{game.name}</h1>
+            {(game.screenshots && game.screenshots.length > 0) ||
+            (game.videos && game.videos.length > 0) ? (
+              <div className="space-y-8 mb-8">
+                {game.screenshots && game.screenshots.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-4">Screenshots</h2>
+                    <GameScreenshots
+                      screenshots={game.screenshots}
+                      gameName={game.name}
+                    />
+                  </div>
+                )}
 
-              {game.summary && (
-                <div className="mb-6">
-                  <h2 className="text-xl font-semibold mb-2">Summary</h2>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    {game.summary}
-                  </p>
-                </div>
-              )}
+                {game.videos && game.videos.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-4">Videos</h2>
+                    <GameVideos videos={game.videos} />
+                  </div>
+                )}
+              </div>
+            ) : null}
 
-              <GameDetails
-                platforms={game.platforms}
-                developers={getDevelopers(game)}
-                publishers={getPublishers(game)}
-                releaseDate={game.first_release_date}
-                genres={game.genres}
-                gameModes={game.game_modes}
-                igdbId={game.id}
-                url={game.url}
-              />
+            <div className="mt-8">
+              <Link
+                href="/games"
+                className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block"
+              >
+                Back to Games
+              </Link>
             </div>
           </div>
-
-          {(game.screenshots && game.screenshots.length > 0) ||
-          (game.videos && game.videos.length > 0) ? (
-            <div className="space-y-8 mb-8">
-              {game.screenshots && game.screenshots.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">Screenshots</h2>
-                  <GameScreenshots
-                    screenshots={game.screenshots}
-                    gameName={game.name}
-                  />
-                </div>
-              )}
-
-              {game.videos && game.videos.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">Videos</h2>
-                  <GameVideos videos={game.videos} />
-                </div>
-              )}
-            </div>
-          ) : null}
-
-          <div className="mt-8">
-            <Link
-              href="/games"
-              className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block"
-            >
-              Back to Games
-            </Link>
-          </div>
-        </div>
+        </>
       ) : (
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center bg-white/90 dark:bg-gray-900/90 p-6 rounded-xl shadow-xl">
           <h1 className="text-3xl font-bold mb-4">Game Not Found</h1>
           <p className="mb-8">We couldn't find a game with the ID: {igdbId}</p>
           <Link

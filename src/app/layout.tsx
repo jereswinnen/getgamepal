@@ -58,7 +58,7 @@ export default function RootLayout({
 
         <main className="container mx-auto py-12">{children}</main>
 
-        <footer className="bg-black/[.03] dark:bg-white/[.03] py-8 mt-12">
+        <footer>
           <div className="container mx-auto text-center">
             <p className="mb-4">
               © {new Date().getFullYear()} GamePal. All rights reserved.
