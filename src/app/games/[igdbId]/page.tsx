@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import GameCover from "@/components/GameCover";
 
 // Define the Game type
 interface Game {
@@ -46,29 +46,19 @@ export default async function GamePage({
 }) {
   const game = await getGameData(params.igdbId);
 
-  // Format the cover URL to get a bigger image
-  const coverUrl = game?.cover?.url
-    ? game.cover.url.replace("t_thumb", "t_cover_big_2x")
-    : null;
-
   return (
     <>
       {game ? (
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
-            {coverUrl && (
-              <div className="w-full md:w-1/3">
-                <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg shadow-lg">
-                  <Image
-                    src={`https:${coverUrl}`}
-                    alt={`${game.name} cover`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
-              </div>
-            )}
+            <div className="w-full md:w-1/3">
+              <GameCover
+                coverUrl={game.cover?.url}
+                gameName={game.name}
+                className="shadow-lg"
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
 
             <div className="w-full md:w-2/3">
               <h1 className="text-3xl font-bold mb-4">{game.name}</h1>

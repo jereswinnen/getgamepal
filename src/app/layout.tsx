@@ -46,11 +46,6 @@ export default function RootLayout({
                     Games
                   </Link>
                 </li>
-                <li>
-                  <Link href="/api/docs" className="hover:underline">
-                    API
-                  </Link>
-                </li>
               </ul>
             </nav>
           </div>

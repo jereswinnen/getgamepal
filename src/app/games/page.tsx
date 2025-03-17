@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import GameCover from "@/components/GameCover";
 
 // Define the Game type
 interface Game {
@@ -56,20 +56,7 @@ export default async function GamesPage() {
               className="block group"
             >
               <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden shadow-md transition-transform group-hover:scale-105">
-                {game.cover && (
-                  <div className="relative aspect-[3/4] w-full">
-                    <Image
-                      src={`https:${game.cover.url.replace(
-                        "t_thumb",
-                        "t_cover_big_2x"
-                      )}`}
-                      alt={`${game.name} cover`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    />
-                  </div>
-                )}
+                <GameCover coverUrl={game.cover?.url} gameName={game.name} />
                 <div className="p-4">
                   <h2 className="font-semibold text-center truncate">
                     {game.name}
