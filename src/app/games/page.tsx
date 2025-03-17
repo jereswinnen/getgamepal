@@ -61,7 +61,7 @@ export default async function GamesPage() {
                     <Image
                       src={`https:${game.cover.url.replace(
                         "t_thumb",
-                        "t_cover_big"
+                        "t_cover_big_2x"
                       )}`}
                       alt={`${game.name} cover`}
                       fill

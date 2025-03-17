@@ -48,7 +48,7 @@ export default async function GamePage({
 
   // Format the cover URL to get a bigger image
   const coverUrl = game?.cover?.url
-    ? game.cover.url.replace("t_thumb", "t_cover_big")
+    ? game.cover.url.replace("t_thumb", "t_cover_big_2x")
     : null;
 
   return (
