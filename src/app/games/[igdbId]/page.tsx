@@ -55,7 +55,6 @@ export default async function GamePage({
               <GameCover
                 coverUrl={game.cover?.url}
                 gameName={game.name}
-                className="shadow-lg"
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
