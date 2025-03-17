@@ -46,6 +46,11 @@ export default function RootLayout({
                     Games
                   </Link>
                 </li>
+                <li>
+                  <Link href="/search" className="hover:underline">
+                    Search
+                  </Link>
+                </li>
               </ul>
             </nav>
           </div>

@@ -44,6 +44,7 @@ interface Game {
     id: number;
     name: string;
   }[];
+  url?: string;
 }
 
 // Function to get the game data from IGDB
@@ -62,7 +63,7 @@ async function getGameData(igdbId: string): Promise<Game | null> {
       },
       body: `fields name, cover.url, summary, screenshots.url, videos.*, platforms.name, 
       involved_companies.company.name, involved_companies.developer, involved_companies.publisher, 
-      first_release_date, genres.name, game_modes.name; 
+      first_release_date, genres.name, game_modes.name, url; 
       where id = ${igdbId}; 
       limit 1;`,
     });
@@ -145,6 +146,7 @@ export default async function GamePage({
                 genres={game.genres}
                 gameModes={game.game_modes}
                 igdbId={game.id}
+                url={game.url}
               />
             </div>
           </div>

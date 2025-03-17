@@ -30,6 +30,7 @@ interface GameDetailsProps {
   genres?: Genre[];
   gameModes?: GameMode[];
   igdbId: number;
+  url?: string;
 }
 
 export default function GameDetails({
@@ -40,6 +41,7 @@ export default function GameDetails({
   genres,
   gameModes,
   igdbId,
+  url,
 }: GameDetailsProps) {
   // Format release date and check if it's in the future
   const formattedReleaseDate = releaseDate
@@ -126,7 +128,7 @@ export default function GameDetails({
 
       <div>
         <a
-          href={`https://www.igdb.com/games/${igdbId}`}
+          href={url}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:underline inline-flex items-center gap-1"
