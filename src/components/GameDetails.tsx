@@ -78,7 +78,13 @@ function RatingDisplay({ rating, count }: { rating?: number; count?: number }) {
       </div>
       <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full mt-2">
         <div
-          className={`h-2 rounded-full ${colorClass.replace("text-", "bg-")}`}
+          className={`h-2 rounded-full ${
+            ratingValue < 50
+              ? "bg-red-600 dark:bg-red-400"
+              : ratingValue < 75
+              ? "bg-yellow-600 dark:bg-yellow-400"
+              : "bg-green-600 dark:bg-green-400"
+          }`}
           style={{ width: `${ratingValue}%` }}
         ></div>
       </div>

@@ -49,6 +49,10 @@ interface Game {
   url?: string;
   total_rating?: number;
   rating_count?: number;
+  similar_games?: {
+    id: number;
+    name: string;
+  }[];
 }
 
 // Function to get the game data from IGDB
@@ -67,7 +71,7 @@ async function getGameData(igdbId: string): Promise<Game | null> {
       },
       body: `fields name, cover.url, summary, screenshots.url, videos.*, platforms.name, 
       involved_companies.company.name, involved_companies.developer, involved_companies.publisher, 
-      first_release_date, genres.name, game_modes.name, url, total_rating, rating_count; 
+      first_release_date, genres.name, game_modes.name, url, total_rating, rating_count, similar_games; 
       where id = ${igdbId}; 
       limit 1;`,
     });
@@ -186,7 +190,7 @@ export default async function GamePage({
             ) : null}
 
             {/* Similar Games Section */}
-            <SimilarGames gameId={game.id} />
+            <SimilarGames gameId={game.id} similarGames={game.similar_games} />
 
             <div className="mt-8">
               <Link

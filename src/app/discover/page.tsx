@@ -104,13 +104,10 @@ function SectionHeader({
 
 // Games grid component that displays either all games or a limited number
 function GamesGrid({ games }: { games: GameResult[] }) {
-  // Show 5 games or all games if fewer than 5
-  const displayCount = Math.min(games.length, 5);
-  const displayedGames = games.slice(0, displayCount);
-
+  // Show all games, not limiting to 5
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-      {displayedGames.map((game) => (
+      {games.map((game) => (
         <GameCard key={game.id} game={game} />
       ))}
     </div>
@@ -133,17 +130,6 @@ function DiscoverySection({
     <section className="mb-16">
       <SectionHeader title={title} description={description} count={count} />
       <GamesGrid games={games} />
-
-      {games.length > 5 && (
-        <div className="mt-6 text-center">
-          <Link
-            href={`/games?section=${title.toLowerCase().replace(/\s+/g, "-")}`}
-            className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-          >
-            View All ({games.length})
-          </Link>
-        </div>
-      )}
     </section>
   );
 }
