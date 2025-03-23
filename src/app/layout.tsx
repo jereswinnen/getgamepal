@@ -42,6 +42,11 @@ export default function RootLayout({
                   </Link>
                 </li>
                 <li>
+                  <Link href="/discover" className="hover:underline">
+                    Discover
+                  </Link>
+                </li>
+                <li>
                   <Link href="/games" className="hover:underline">
                     Games
                   </Link>
