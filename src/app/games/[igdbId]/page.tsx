@@ -4,6 +4,7 @@ import GameScreenshots from "@/components/GameScreenshots";
 import GameVideos from "@/components/GameVideos";
 import GameDetails from "@/components/GameDetails";
 import GameCoverBackground from "@/components/GameCoverBackground";
+import SimilarGames from "@/components/SimilarGames";
 
 // Define the Game type
 interface Game {
@@ -46,6 +47,8 @@ interface Game {
     name: string;
   }[];
   url?: string;
+  total_rating?: number;
+  rating_count?: number;
 }
 
 // Function to get the game data from IGDB
@@ -64,7 +67,7 @@ async function getGameData(igdbId: string): Promise<Game | null> {
       },
       body: `fields name, cover.url, summary, screenshots.url, videos.*, platforms.name, 
       involved_companies.company.name, involved_companies.developer, involved_companies.publisher, 
-      first_release_date, genres.name, game_modes.name, url; 
+      first_release_date, genres.name, game_modes.name, url, total_rating, rating_count; 
       where id = ${igdbId}; 
       limit 1;`,
     });
@@ -154,6 +157,8 @@ export default async function GamePage({
                   gameModes={game.game_modes}
                   igdbId={game.id}
                   url={game.url}
+                  totalRating={game.total_rating}
+                  ratingCount={game.rating_count}
                 />
               </div>
             </div>
@@ -180,12 +185,21 @@ export default async function GamePage({
               </div>
             ) : null}
 
+            {/* Similar Games Section */}
+            <SimilarGames gameId={game.id} />
+
             <div className="mt-8">
               <Link
-                href="/games"
-                className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block"
+                href="/discover"
+                className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block mr-4"
               >
-                Back to Games
+                Discover Games
+              </Link>
+              <Link
+                href="/games"
+                className="rounded-full bg-black/5 dark:bg-white/10 px-6 py-3 font-medium hover:bg-black/10 dark:hover:bg-white/20 transition-colors inline-block"
+              >
+                All Games
               </Link>
             </div>
           </div>

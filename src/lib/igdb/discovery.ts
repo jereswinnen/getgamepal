@@ -40,7 +40,9 @@ export async function getLastRefreshTime(): Promise<string | null> {
  * Update the last refresh time
  */
 async function updateLastRefreshTime(): Promise<void> {
-  await cacheManager.set(LAST_REFRESH_KEY, new Date().toISOString());
+  const now = new Date().toISOString();
+  await cacheManager.set(LAST_REFRESH_KEY, now);
+  console.log(`Updated last refresh time to ${now}`);
 }
 
 /**
@@ -58,22 +60,58 @@ export async function getAllSectionsMeta(): Promise<DiscoverySectionMeta[]> {
 
     // Build sections metadata with game counts
     const sectionsWithCounts: DiscoverySectionMeta[] = [];
+    const lastRefreshTime =
+      (await getLastRefreshTime()) || new Date().toISOString();
 
+    // First attempt to gather data from cache
     for (const section of discoverySections) {
       const cacheKey = `${DISCOVERY_CACHE_PREFIX}${section.id}`;
       const cachedData = await cacheManager.get<GameResult[]>(cacheKey);
+
+      // If not cached, we'll fetch it now to get accurate counts
+      let games = cachedData;
+      if (!games) {
+        try {
+          console.log(`Fetching games for section ${section.id}...`);
+          games = await queryIGDB<GameResult[]>(
+            section.endpoint,
+            section.query.trim(),
+            cacheKey
+          );
+
+          // Apply transformation if available
+          if (section.transform && Array.isArray(games)) {
+            games = section.transform(games);
+            await cacheManager.set(cacheKey, games);
+          }
+
+          console.log(
+            `Fetched ${games?.length || 0} games for section ${section.id}`
+          );
+        } catch (error) {
+          console.error(
+            `Error pre-fetching games for section ${section.id}:`,
+            error
+          );
+          games = [];
+        }
+      }
 
       sectionsWithCounts.push({
         id: section.id,
         name: section.name,
         description: section.description,
-        count: cachedData?.length || 0,
-        lastUpdated: (await getLastRefreshTime()) || new Date().toISOString(),
+        count: games?.length || 0,
+        lastUpdated: lastRefreshTime,
       });
     }
 
     // Cache the sections metadata
     await cacheManager.set(ALL_SECTIONS_CACHE_KEY, sectionsWithCounts);
+    console.log(
+      "Cached sections metadata:",
+      sectionsWithCounts.map((s) => `${s.id}: ${s.count} games`).join(", ")
+    );
 
     return sectionsWithCounts;
   } catch (error) {
@@ -83,6 +121,47 @@ export async function getAllSectionsMeta(): Promise<DiscoverySectionMeta[]> {
       name,
       description,
     }));
+  }
+}
+
+/**
+ * Update section metadata counts
+ */
+async function updateSectionMetaCounts(): Promise<void> {
+  try {
+    console.log("Updating section metadata counts...");
+    // Get current metadata
+    const cachedSections = await cacheManager.get<DiscoverySectionMeta[]>(
+      ALL_SECTIONS_CACHE_KEY
+    );
+
+    if (cachedSections) {
+      const lastRefreshTime =
+        (await getLastRefreshTime()) || new Date().toISOString();
+      const updatedSections = [...cachedSections];
+
+      // Update counts for each section
+      for (let i = 0; i < updatedSections.length; i++) {
+        const section = updatedSections[i];
+        const cacheKey = `${DISCOVERY_CACHE_PREFIX}${section.id}`;
+        const games = await cacheManager.get<GameResult[]>(cacheKey);
+
+        updatedSections[i] = {
+          ...section,
+          count: games?.length || 0,
+          lastUpdated: lastRefreshTime,
+        };
+      }
+
+      // Update cache
+      await cacheManager.set(ALL_SECTIONS_CACHE_KEY, updatedSections);
+      console.log(
+        "Updated sections metadata:",
+        updatedSections.map((s) => `${s.id}: ${s.count} games`).join(", ")
+      );
+    }
+  } catch (error) {
+    console.error("Error updating section metadata counts:", error);
   }
 }
 
@@ -107,6 +186,7 @@ export async function getSectionGames(
     // If not in cache, fetch from IGDB API
     if (!games) {
       fromCache = false;
+      console.log(`Fetching games for section ${sectionId} from IGDB API...`);
       games = await queryIGDB<GameResult[]>(
         section.endpoint,
         section.query.trim(),
@@ -121,7 +201,14 @@ export async function getSectionGames(
 
       // Update last refresh time
       await updateLastRefreshTime();
+
+      // Update section metadata counts
+      await updateSectionMetaCounts();
     }
+
+    console.log(
+      `Retrieved ${games?.length || 0} games for section ${sectionId}`
+    );
 
     // Process the game data
     if (Array.isArray(games)) {
@@ -130,16 +217,23 @@ export async function getSectionGames(
       games = [];
     }
 
+    // Get current metadata for this section
+    const allSections = await getAllSectionsMeta();
+    const sectionMeta = allSections.find((s) => s.id === sectionId) || {
+      id: section.id,
+      name: section.name,
+      description: section.description,
+      count: games.length,
+      lastUpdated: fromCache
+        ? (await getLastRefreshTime()) || new Date().toISOString()
+        : new Date().toISOString(),
+    };
+
     // Build the response
     const response: DiscoveryResponse = {
       section: {
-        id: section.id,
-        name: section.name,
-        description: section.description,
-        count: games.length,
-        lastUpdated: fromCache
-          ? (await getLastRefreshTime()) || new Date().toISOString()
-          : new Date().toISOString(),
+        ...sectionMeta,
+        count: games.length, // Ensure count matches actual games length
       },
       games,
     };
@@ -169,8 +263,11 @@ export async function getFeaturedGames(
       }
     }
 
+    // Get updated sections metadata after fetching games
+    const updatedSections = await getAllSectionsMeta();
+
     return {
-      sections,
+      sections: updatedSections,
       featured,
     };
   } catch (error) {
@@ -184,31 +281,53 @@ export async function getFeaturedGames(
  */
 export async function refreshAllSections(): Promise<boolean> {
   try {
-    // Clear cache for discovery sections
+    console.log("Starting refresh of all discovery sections...");
+
+    // First, clear the metadata cache
+    await cacheManager.delete(ALL_SECTIONS_CACHE_KEY);
+    console.log("Cleared sections metadata cache");
+
+    // Update the last refresh time right away
+    await updateLastRefreshTime();
+
+    // Process each section
     for (const section of discoverySections) {
       const cacheKey = `${DISCOVERY_CACHE_PREFIX}${section.id}`;
 
+      // Delete existing cache for this section
+      await cacheManager.delete(cacheKey);
+      console.log(`Cleared cache for section ${section.id}`);
+
       // Fetch fresh data from IGDB
-      const games = await queryIGDB<GameResult[]>(
-        section.endpoint,
-        section.query.trim()
-      );
+      console.log(`Fetching fresh data for section ${section.id}...`);
+      try {
+        const games = await queryIGDB<GameResult[]>(
+          section.endpoint,
+          section.query.trim()
+        );
 
-      // Apply transformation if available
-      const transformedGames =
-        section.transform && Array.isArray(games)
-          ? section.transform(games)
-          : games;
+        // Apply transformation if available
+        const transformedGames =
+          section.transform && Array.isArray(games)
+            ? section.transform(games)
+            : games;
 
-      // Update cache
-      await cacheManager.set(cacheKey, transformedGames);
+        // Update cache
+        await cacheManager.set(cacheKey, transformedGames);
+        console.log(
+          `Updated cache for section ${section.id} with ${
+            transformedGames?.length || 0
+          } games`
+        );
+      } catch (error) {
+        console.error(`Error refreshing section ${section.id}:`, error);
+      }
     }
 
-    // Update last refresh time
-    await updateLastRefreshTime();
+    // Update sections metadata with new counts
+    await updateSectionMetaCounts();
 
-    // Update sections metadata
-    await getAllSectionsMeta();
+    console.log("Completed refresh of all discovery sections");
 
     return true;
   } catch (error) {

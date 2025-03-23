@@ -66,6 +66,8 @@ export interface CacheManager {
   get: <T>(key: string) => Promise<T | null>;
   set: <T>(key: string, data: T) => Promise<void>;
   clear: () => Promise<void>;
+  delete: (key: string) => Promise<void>;
+  keys: () => Promise<string[]>;
   getStats: () => typeof cacheStats;
 }
 
@@ -138,6 +140,37 @@ export const cacheManager: CacheManager = {
 
     // Update refresh timestamp
     cacheStats.lastRefresh = new Date().toISOString();
+  },
+
+  delete: async (key: string): Promise<void> => {
+    // Delete from memory cache
+    memoryCache.del(key);
+
+    // Delete from Redis if available
+    if (redisConnected && redisClient) {
+      try {
+        await redisClient.del(key);
+      } catch (error) {
+        console.error("Redis delete error:", error);
+      }
+    }
+
+    // Delete from file cache
+    try {
+      await ensureCacheDir();
+      const filePath = getFileCachePath(key);
+      await fs.unlink(filePath).catch(() => {}); // Ignore if file doesn't exist
+    } catch (error) {
+      console.error("File cache delete error:", error);
+    }
+  },
+
+  keys: async (): Promise<string[]> => {
+    // Get keys from memory cache
+    const memKeys = memoryCache.keys();
+
+    // Return memory cache keys
+    return memKeys;
   },
 
   clear: async (): Promise<void> => {

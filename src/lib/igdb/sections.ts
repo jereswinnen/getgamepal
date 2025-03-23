@@ -4,21 +4,27 @@ import { DiscoverySection, GameResult } from "./types";
 // Current date helpers
 const now = new Date();
 const threeMonthsFromNow = addMonths(now, 3);
+const sixMonthsFromNow = addMonths(now, 6);
+const oneYearFromNow = addMonths(now, 12);
 const oneMonthAgo = subMonths(now, 1);
 const oneYearAgo = subMonths(now, 12);
+const twoYearsAgo = subMonths(now, 24);
 const oneMonthFromNow = addMonths(now, 1);
 
 // Formatting dates for IGDB (Unix timestamp in seconds)
 const unixNow = Math.floor(now.getTime() / 1000);
 const unixThreeMonthsFromNow = Math.floor(threeMonthsFromNow.getTime() / 1000);
+const unixSixMonthsFromNow = Math.floor(sixMonthsFromNow.getTime() / 1000);
+const unixOneYearFromNow = Math.floor(oneYearFromNow.getTime() / 1000);
 const unixOneMonthAgo = Math.floor(oneMonthAgo.getTime() / 1000);
 const unixOneYearAgo = Math.floor(oneYearAgo.getTime() / 1000);
+const unixTwoYearsAgo = Math.floor(twoYearsAgo.getTime() / 1000);
 const unixOneMonthFromNow = Math.floor(oneMonthFromNow.getTime() / 1000);
 
 // Common fields to fetch for all queries
 const COMMON_FIELDS = `
   fields id, name, slug, summary, cover.url, first_release_date, 
-  total_rating, total_rating_count, 
+  total_rating, total_rating_count, hypes,
   platforms.name, platforms.slug, platforms.abbreviation, 
   genres.name, genres.slug,
   involved_companies.company.name, involved_companies.developer, involved_companies.publisher;
@@ -29,16 +35,58 @@ export const discoverySections: DiscoverySection[] = [
   {
     id: "upcoming",
     name: "Upcoming Games",
-    description: "Games releasing in the next 3 months",
+    description: "Anticipated games coming in the next 6 months",
     endpoint: "games",
     query: `
       ${COMMON_FIELDS}
-      where first_release_date >= ${unixNow} 
-      & first_release_date <= ${unixThreeMonthsFromNow} 
-      & status = 0;
-      sort first_release_date asc;
-      limit 20;
+      where (first_release_date >= ${unixNow} 
+        & first_release_date <= ${unixSixMonthsFromNow}) 
+        | (hypes > 5 & first_release_date >= ${unixNow} & first_release_date <= ${unixSixMonthsFromNow});
+      sort hypes desc;
+      limit 50;
     `,
+    transform: (games: GameResult[]) => {
+      // Ensure we have games with covers first, then sort by release date
+      const withCovers = games.filter((game) => game.cover?.url);
+      const withoutCovers = games.filter((game) => !game.cover?.url);
+
+      // Sort by release date (more immediate releases first)
+      const sortedWithCovers = withCovers.sort((a, b) => {
+        // If one game has a release date and the other doesn't, the one with a date comes first
+        if (a.first_release_date && !b.first_release_date) return -1;
+        if (!a.first_release_date && b.first_release_date) return 1;
+        // If both have dates, sort chronologically
+        if (a.first_release_date && b.first_release_date) {
+          return a.first_release_date - b.first_release_date;
+        }
+        // If neither has a date, leave as is (sorted by hype from API)
+        return 0;
+      });
+
+      // Filter to ensure we only show games in next 6 months
+      const upcomingSixMonths = sortedWithCovers.filter(
+        (game) =>
+          game.first_release_date &&
+          game.first_release_date <= unixSixMonthsFromNow
+      );
+
+      // Take the top games with covers, then add some without if needed to reach 20 total
+      const result = [...upcomingSixMonths];
+      if (result.length < 20) {
+        const remainingNeeded = 20 - result.length;
+        // Only add games without covers if they're within the 6-month window
+        const eligibleWithoutCovers = withoutCovers.filter(
+          (game) =>
+            game.first_release_date &&
+            game.first_release_date <= unixSixMonthsFromNow
+        );
+        result.push(...eligibleWithoutCovers.slice(0, remainingNeeded));
+      } else {
+        return result.slice(0, 20);
+      }
+
+      return result;
+    },
   },
   {
     id: "trending",
@@ -47,7 +95,7 @@ export const discoverySections: DiscoverySection[] = [
     endpoint: "games",
     query: `
       ${COMMON_FIELDS}
-      where first_release_date >= ${unixOneMonthAgo} 
+      where first_release_date >= ${unixTwoYearsAgo} 
       & first_release_date <= ${unixNow} 
       & total_rating_count > 5;
       sort hypes desc;

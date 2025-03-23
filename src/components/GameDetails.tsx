@@ -31,6 +31,59 @@ interface GameDetailsProps {
   gameModes?: GameMode[];
   igdbId: number;
   url?: string;
+  totalRating?: number;
+  ratingCount?: number;
+}
+
+// Badge component for visual elements like platforms and genres
+function Badge({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`inline-block bg-black/5 dark:bg-white/10 px-3 py-1 rounded-full text-sm mr-2 mb-2 ${className}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+// Rating component
+function RatingDisplay({ rating, count }: { rating?: number; count?: number }) {
+  if (!rating) return null;
+
+  const ratingValue = Math.round(rating);
+
+  // Determine color based on rating
+  let colorClass = "text-green-600 dark:text-green-400";
+  if (ratingValue < 50) {
+    colorClass = "text-red-600 dark:text-red-400";
+  } else if (ratingValue < 75) {
+    colorClass = "text-yellow-600 dark:text-yellow-400";
+  }
+
+  return (
+    <div className="mb-6">
+      <div className="flex items-center gap-2">
+        <div className={`text-3xl font-bold ${colorClass}`}>{ratingValue}%</div>
+        {count && count > 0 && (
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            from {count} {count === 1 ? "rating" : "ratings"}
+          </span>
+        )}
+      </div>
+      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full mt-2">
+        <div
+          className={`h-2 rounded-full ${colorClass.replace("text-", "bg-")}`}
+          style={{ width: `${ratingValue}%` }}
+        ></div>
+      </div>
+    </div>
+  );
 }
 
 export default function GameDetails({
@@ -42,6 +95,8 @@ export default function GameDetails({
   gameModes,
   igdbId,
   url,
+  totalRating,
+  ratingCount,
 }: GameDetailsProps) {
   // Format release date and check if it's in the future
   const formattedReleaseDate = releaseDate
@@ -60,30 +115,46 @@ export default function GameDetails({
         )} from now)`
     : "Unknown";
 
-  // Helper function to render a list of items with commas
-  const renderList = (items?: { id: number; name: string }[]) => {
-    if (!items || items.length === 0) return "Unknown";
-    return items.map((item) => item.name).join(", ");
-  };
-
   return (
-    <div className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {platforms && platforms.length > 0 && (
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Platforms
-            </h3>
-            <p>{renderList(platforms)}</p>
-          </div>
-        )}
+    <div>
+      {/* Rating display if available */}
+      <RatingDisplay rating={totalRating} count={ratingCount} />
 
+      {/* Platforms with badges */}
+      {platforms && platforms.length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+            Platforms
+          </h3>
+          <div className="flex flex-wrap">
+            {platforms.map((platform) => (
+              <Badge key={platform.id}>{platform.name}</Badge>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Genres with badges */}
+      {genres && genres.length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+            Genres
+          </h3>
+          <div className="flex flex-wrap">
+            {genres.map((genre) => (
+              <Badge key={genre.id}>{genre.name}</Badge>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {developers && developers.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
               Developer
             </h3>
-            <p>{renderList(developers)}</p>
+            <p>{developers.map((d) => d.name).join(", ")}</p>
           </div>
         )}
 
@@ -92,7 +163,7 @@ export default function GameDetails({
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
               Publisher
             </h3>
-            <p>{renderList(publishers)}</p>
+            <p>{publishers.map((p) => p.name).join(", ")}</p>
           </div>
         )}
 
@@ -101,18 +172,15 @@ export default function GameDetails({
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
               Release Date
             </h3>
-            <p className={!isReleased ? "font-medium text-primary" : ""}>
+            <p
+              className={
+                !isReleased
+                  ? "font-medium text-blue-600 dark:text-blue-400"
+                  : ""
+              }
+            >
               {releaseDateDisplay}
             </p>
-          </div>
-        )}
-
-        {genres && genres.length > 0 && (
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Genres
-            </h3>
-            <p>{renderList(genres)}</p>
           </div>
         )}
 
@@ -121,19 +189,19 @@ export default function GameDetails({
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
               Game Modes
             </h3>
-            <p>{renderList(gameModes)}</p>
+            <p>{gameModes.map((m) => m.name).join(", ")}</p>
           </div>
         )}
       </div>
 
-      <div>
+      <div className="mt-4 border-t pt-4 border-gray-200 dark:border-gray-700">
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline inline-flex items-center gap-1"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
         >
-          View on IGDB
+          <span>View on IGDB</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"

@@ -14,27 +14,43 @@ function formatDate(timestamp?: number): string {
   });
 }
 
+// Format platform list
+function formatPlatforms(
+  platforms?: { name?: string; abbreviation?: string }[]
+): string {
+  if (!platforms || platforms.length === 0) return "Unknown platform";
+  return platforms
+    .slice(0, 3)
+    .map((p) => p.abbreviation || p.name)
+    .filter(Boolean)
+    .join(", ");
+}
+
+// Format rating
+function formatRating(rating?: number): string {
+  if (!rating) return "";
+  return `${Math.round(rating)}%`;
+}
+
 // Component to display a game card
 function GameCard({ game }: { game: GameResult }) {
   const coverUrl = game.cover?.url
     ? game.cover.url.replace("t_thumb", "t_cover_big")
     : null;
 
-  const platforms = game.platforms
-    ?.slice(0, 3)
-    .map((p) => p.abbreviation || p.name)
-    .join(", ");
+  const platforms = formatPlatforms(game.platforms);
+  const rating = formatRating(game.total_rating);
 
   return (
     <Link href={`/games/${game.id}`} className="block group">
-      <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+      <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
         <div className="relative aspect-[3/4] overflow-hidden bg-black/10 dark:bg-white/10">
           {coverUrl ? (
             <Image
               src={coverUrl}
               alt={game.name}
               fill
-              sizes="(max-width: 768px) 100vw, 33vw"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 20vw"
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
@@ -45,12 +61,19 @@ function GameCard({ game }: { game: GameResult }) {
               </div>
             </div>
           )}
+          {rating && (
+            <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-md text-sm font-medium">
+              {rating}
+            </div>
+          )}
         </div>
         <div className="p-4">
           <h3 className="font-semibold text-lg truncate">{game.name}</h3>
-          <div className="text-sm opacity-80 flex justify-between">
-            <span>{platforms || "Unknown platform"}</span>
-            <span>{formatDate(game.first_release_date)}</span>
+          <div className="text-sm opacity-80 flex justify-between mt-1">
+            <div className="truncate max-w-[60%]">{platforms}</div>
+            <div className="shrink-0">
+              {formatDate(game.first_release_date)}
+            </div>
           </div>
         </div>
       </div>
@@ -58,27 +81,69 @@ function GameCard({ game }: { game: GameResult }) {
   );
 }
 
-// Component to display a section of games
+// Section header component
+function SectionHeader({
+  title,
+  description,
+  count = 0,
+}: {
+  title: string;
+  description?: string;
+  count?: number;
+}) {
+  return (
+    <div className="mb-6">
+      <div className="flex items-baseline justify-between">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <span className="text-sm opacity-60">{count} games</span>
+      </div>
+      {description && <p className="text-foreground/70 mt-1">{description}</p>}
+    </div>
+  );
+}
+
+// Games grid component that displays either all games or a limited number
+function GamesGrid({ games }: { games: GameResult[] }) {
+  // Show 5 games or all games if fewer than 5
+  const displayCount = Math.min(games.length, 5);
+  const displayedGames = games.slice(0, displayCount);
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      {displayedGames.map((game) => (
+        <GameCard key={game.id} game={game} />
+      ))}
+    </div>
+  );
+}
+
+// Discovery section component
 function DiscoverySection({
   title,
   description,
   games,
+  count = 0,
 }: {
   title: string;
   description?: string;
   games: GameResult[];
+  count?: number;
 }) {
   return (
     <section className="mb-16">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">{title}</h2>
-        {description && <p className="text-foreground/70">{description}</p>}
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {games.map((game) => (
-          <GameCard key={game.id} game={game} />
-        ))}
-      </div>
+      <SectionHeader title={title} description={description} count={count} />
+      <GamesGrid games={games} />
+
+      {games.length > 5 && (
+        <div className="mt-6 text-center">
+          <Link
+            href={`/games?section=${title.toLowerCase().replace(/\s+/g, "-")}`}
+            className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          >
+            View All ({games.length})
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
@@ -89,8 +154,14 @@ export default async function DiscoverPage() {
   const sections = await getAllSectionsMeta();
 
   // Fetch data for each section
-  const sectionsData: (DiscoveryResponse | null)[] = await Promise.all(
+  const sectionsData = await Promise.all(
     sections.map((section) => getSectionGames(section.id))
+  );
+
+  // Filter out sections with no games
+  const validSectionsData = sectionsData.filter(
+    (sectionData): sectionData is DiscoveryResponse =>
+      !!sectionData && sectionData.games.length > 0
   );
 
   return (
@@ -103,17 +174,31 @@ export default async function DiscoverPage() {
         </p>
       </div>
 
-      {sectionsData.map((sectionData, index) => {
-        if (!sectionData || !sectionData.games.length) return null;
-        return (
+      {validSectionsData.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-xl">
+            We're currently refreshing our game data. Please check back shortly.
+          </p>
+          <div className="mt-6">
+            <Link
+              href="/"
+              className="px-6 py-3 bg-black/5 dark:bg-white/5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            >
+              Return to Home
+            </Link>
+          </div>
+        </div>
+      ) : (
+        validSectionsData.map((sectionData) => (
           <DiscoverySection
             key={sectionData.section.id}
             title={sectionData.section.name}
             description={sectionData.section.description}
-            games={sectionData.games.slice(0, 10)} // Limit to 10 games per section
+            count={sectionData.section.count}
+            games={sectionData.games}
           />
-        );
-      })}
+        ))
+      )}
     </div>
   );
 }
