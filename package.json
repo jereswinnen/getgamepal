@@ -11,8 +11,10 @@
   "dependencies": {
     "date-fns": "^4.1.0",
     "next": "15.2.2",
+    "node-cache": "^5.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "redis": "^4.7.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
