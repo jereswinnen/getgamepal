@@ -63,23 +63,22 @@ async function getGameData(igdbId: string): Promise<Game | null> {
     const host = process.env.VERCEL_URL || "localhost:3000";
     const baseUrl = `${protocol}://${host}`;
 
-    // Make the request to our own API endpoint with expanded fields
-    const response = await fetch(`${baseUrl}/api/v4/games`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-      body: `fields name, cover.url, summary, screenshots.url, videos.*, platforms.name, 
-      involved_companies.company.name, involved_companies.developer, involved_companies.publisher, 
-      first_release_date, genres.name, game_modes.name, url, total_rating, rating_count, similar_games; 
-      where id = ${igdbId}; 
-      limit 1;`,
+    // Use our dedicated cached game endpoint
+    const response = await fetch(`${baseUrl}/api/games/${igdbId}`, {
+      next: { revalidate: 3600 }, // Revalidate every hour at most
     });
+
+    if (!response.ok) {
+      console.error(
+        `Failed to fetch game data: ${response.status} ${response.statusText}`
+      );
+      return null;
+    }
 
     const data = await response.json();
 
-    // Return the first game or null if no games were found
-    return data[0] || null;
+    // Return the game or null if no game was found
+    return data.error ? null : data;
   } catch (error) {
     console.error("Error fetching game data:", error);
     return null;

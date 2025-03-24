@@ -80,6 +80,19 @@ GamePal offers several API endpoints organized by domain:
 
 ### Game Information Endpoints
 
+#### `/api/games/[gameId]`
+
+- **Method**: GET
+- **Purpose**: Retrieves detailed information for a specific game
+- **Parameters**: `gameId` - IGDB ID of the game
+- **Behavior**:
+  - Checks cache first
+  - Falls back to IGDB API for fresh data
+  - Processes image URLs and other data for consistency
+  - Caches results for 24 hours
+- **Example**: `/api/games/123`
+- **Returns**: Complete game object with all details needed for the game page
+
 #### `/api/games/[gameId]/similar`
 
 - **Method**: GET
