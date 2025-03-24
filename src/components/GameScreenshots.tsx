@@ -31,7 +31,7 @@ export default function GameScreenshots({
 
   // Format the screenshot URL to get a bigger image
   const formatScreenshotUrl = (url: string) => {
-    return `https:${url.replace("t_thumb", "t_screenshot_big")}`;
+    return `https:${url.replace("t_thumb", "t_screenshot_big_2x")}`;
   };
 
   return (
@@ -59,7 +59,7 @@ export default function GameScreenshots({
               }`}
             >
               <Image
-                src={`https:${screenshot.url.replace("t_thumb", "t_thumb")}`}
+                src={`https:${screenshot.url.replace("t_thumb", "t_thumb_2x")}`}
                 alt={`${gameName} thumbnail ${index + 1}`}
                 fill
                 className="object-cover"
