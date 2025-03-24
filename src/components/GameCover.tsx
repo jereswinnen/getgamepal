@@ -15,9 +15,13 @@ export default function GameCover({
   aspectRatio = "3/4",
   sizes = "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw",
 }: GameCoverProps) {
-  // Format the cover URL to get a bigger image if it exists
+  // Format the cover URL to get a bigger image if it exists and ensure it has https protocol
   const formattedCoverUrl = coverUrl
-    ? `https:${coverUrl.replace("t_thumb", "t_cover_big_2x")}`
+    ? coverUrl.startsWith("//")
+      ? `https:${coverUrl.replace("t_thumb", "t_cover_big_2x")}`
+      : coverUrl.startsWith("http")
+      ? coverUrl.replace("t_thumb", "t_cover_big_2x")
+      : `https://${coverUrl.replace("t_thumb", "t_cover_big_2x")}`
     : null;
 
   return (

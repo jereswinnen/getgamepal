@@ -11,6 +11,7 @@ interface Game {
     url: string;
   };
   first_release_date?: number;
+  similarityReason?: string;
 }
 
 interface SimilarGamesProps {
@@ -35,80 +36,59 @@ export default function SimilarGames({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Function to fetch game details by IDs
-    const fetchGamesByIds = async (ids: number[]) => {
-      try {
-        setLoading(true);
-        // Limit to 6 games max for UI
-        const limitedIds = ids.slice(0, 6);
-        const response = await fetch("/api/v4/games", {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain",
-          },
-          body: `fields name, cover.url, first_release_date;
-            where id = (${limitedIds.join(",")}) & cover != null;
-            limit ${limitedIds.length};`,
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch similar games");
-        }
-
-        const data = await response.json();
-        setSimilarGames(data);
+    const fetchSimilarGames = async () => {
+      if (!gameId) {
         setLoading(false);
-      } catch (err) {
-        console.error("Error fetching similar games by IDs:", err);
-        setError("Unable to load similar games");
-        setLoading(false);
+        return;
       }
-    };
 
-    // Function to fetch similar games by gameId
-    const fetchSimilarGamesByGameId = async (id: number) => {
       try {
         setLoading(true);
-        const response = await fetch("/api/v4/games", {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain",
-          },
-          body: `fields name, cover.url, first_release_date;
-            where similar_games = ${id} & cover != null;
-            limit 6;`,
-        });
+        console.log(`Fetching similar games for gameId ${gameId}`);
+
+        // Use the dedicated endpoint
+        const response = await fetch(`/api/games/${gameId}/similar`);
 
         if (!response.ok) {
-          throw new Error("Failed to fetch similar games");
+          const errorData = await response.json().catch(() => ({}));
+          console.error("Similar games API error:", {
+            status: response.status,
+            statusText: response.statusText,
+            data: errorData,
+          });
+          throw new Error(
+            `Failed to fetch similar games: ${response.status} ${response.statusText}`
+          );
         }
 
         const data = await response.json();
+        console.log(`Received ${data.length} similar games`);
         setSimilarGames(data);
-      } catch (err) {
+        setLoading(false);
+      } catch (err: any) {
         console.error("Error fetching similar games:", err);
-        setError("Unable to load similar games");
-      } finally {
+        setError(err.message || "Unable to load similar games");
         setLoading(false);
       }
     };
 
-    // Main logic
-    if (initialSimilarGames && initialSimilarGames.length > 0) {
-      // Check if initialSimilarGames is array of numbers (IDs) or objects
-      if (typeof initialSimilarGames[0] === "number") {
-        // It's an array of IDs, fetch the complete data
-        fetchGamesByIds(initialSimilarGames as number[]);
-      } else {
-        // It's already an array of game objects
-        setSimilarGames(initialSimilarGames as Game[]);
-        setLoading(false);
-      }
+    // Clear any existing data
+    setSimilarGames([]);
+
+    // Check if we have initial data that are complete Game objects
+    if (
+      initialSimilarGames &&
+      initialSimilarGames.length > 0 &&
+      typeof initialSimilarGames[0] !== "number"
+    ) {
+      // Already have complete game objects
+      console.log("Using provided similar games data");
+      setSimilarGames(initialSimilarGames as Game[]);
+      setLoading(false);
     } else if (gameId) {
-      // No initialSimilarGames, fetch by gameId relation
-      fetchSimilarGamesByGameId(gameId);
+      // Fetch using the dedicated endpoint
+      fetchSimilarGames();
     } else {
-      // No data and no gameId
       setLoading(false);
     }
   }, [gameId, initialSimilarGames]);
@@ -117,7 +97,21 @@ export default function SimilarGames({
     return <SimilarGamesSkeleton />;
   }
 
-  if (error || !similarGames.length) {
+  if (error) {
+    console.error("Similar games error:", error);
+    return (
+      <div className="mt-12">
+        <h2 className="text-xl font-semibold mb-6">Similar Games</h2>
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+          <p className="text-red-600 dark:text-red-400">
+            Unable to load similar games. Please try again later.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!similarGames.length) {
     return null; // Don't show anything if there are no similar games
   }
 

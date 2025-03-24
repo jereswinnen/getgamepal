@@ -190,7 +190,7 @@ export default async function GamePage({
             ) : null}
 
             {/* Similar Games Section */}
-            <SimilarGames gameId={game.id} similarGames={game.similar_games} />
+            <SimilarGames gameId={game.id} />
 
             <div className="mt-8">
               <Link
