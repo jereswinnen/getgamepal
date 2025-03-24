@@ -7,6 +7,7 @@ This document provides a comprehensive overview of GamePal's API endpoints and c
 1. [Caching System](#caching-system)
 2. [API Endpoints](#api-endpoints)
 3. [Best Practices](#best-practices)
+4. [IGDB Integration](#igdb-integration)
 
 ## Caching System
 
@@ -185,3 +186,30 @@ GamePal offers several API endpoints organized by domain:
 2. Look for patterns in cache hit/miss ratios
 3. Monitor cache refresh timestamps to ensure data is being updated regularly
 4. Clear cache selectively when troubleshooting data issues
+
+## IGDB Integration
+
+GamePal integrates with the IGDB API in two ways:
+
+1. **Internal Client Library**
+
+   - Located at `src/lib/igdb/client.ts`
+   - Provides the `queryIGDB` function for internal service-to-service requests
+   - Handles authentication, rate limiting, and caching automatically
+   - Used by all internal API endpoints that need IGDB data
+
+2. **External Proxy Endpoint**
+   - Located at `/api/v4/[...path]`
+   - Provides external access to IGDB API for client-side requests
+   - Hides API keys from clients
+   - Useful for complex or custom queries not covered by existing endpoints
+
+### Best Practices for IGDB Integration
+
+1. **Use the Internal Client Library**: When creating new API endpoints that need IGDB data, use the `queryIGDB` function from the IGDB client library. This ensures consistent authentication, rate limiting, and caching.
+
+2. **Avoid Direct API Calls**: Never call the IGDB API directly from API routes. Always use the client library to ensure proper error handling, caching, and rate limit compliance.
+
+3. **Cache Appropriately**: Use the optional cacheKey parameter in queryIGDB for data that can be safely cached.
+
+4. **Rate Limiting Awareness**: The client library handles rate limiting, but be mindful when designing new features to minimize API calls.

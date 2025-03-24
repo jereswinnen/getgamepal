@@ -23,7 +23,7 @@ function formatCoverUrl(game: GameResult): GameResult {
   if (game.cover && game.cover.url) {
     // Replace URLs to use https and bigger image size
     let url = game.cover.url.replace("//images", "https://images");
-    url = url.replace("t_thumb", "t_cover_big");
+    url = url.replace("t_thumb", "t_cover_big_2x");
     game.cover.url = url;
   }
   return game;

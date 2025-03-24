@@ -1,80 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheManager } from "@/lib/cache";
-
-// IGDB API credentials
-const CLIENT_ID = process.env.IGDB_CLIENT_ID;
-const CLIENT_SECRET = process.env.IGDB_CLIENT_SECRET;
-
-let accessToken: string | null = null;
-let tokenExpiry = 0;
-
-// Get access token for IGDB API
-async function getAccessToken() {
-  if (accessToken && Date.now() < tokenExpiry) {
-    return accessToken;
-  }
-
-  try {
-    const response = await fetch(
-      `https://id.twitch.tv/oauth2/token?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials`,
-      {
-        method: "POST",
-      }
-    );
-
-    const data = await response.json();
-    accessToken = data.access_token;
-    tokenExpiry = Date.now() + data.expires_in * 1000;
-    return accessToken;
-  } catch (error: any) {
-    console.error(
-      "Error getting access token:",
-      error.response ? error.response.data : error.message
-    );
-    throw error;
-  }
-}
-
-// Function to fetch game data from IGDB
-async function fetchGameData(body: string) {
-  try {
-    const token = await getAccessToken();
-
-    if (!token || !CLIENT_ID) {
-      throw new Error("IGDB credentials not available");
-    }
-
-    console.log("Making IGDB API request with body:", body);
-
-    // Make the request to IGDB
-    const response = await fetch("https://api.igdb.com/v4/games", {
-      method: "POST",
-      headers: {
-        "Client-ID": CLIENT_ID,
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "text/plain",
-      },
-      body,
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => "Unknown error");
-      console.error(
-        `IGDB API error: ${response.status} ${response.statusText}`,
-        errorText
-      );
-      throw new Error(
-        `IGDB API error: ${response.status} ${response.statusText}`
-      );
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error: any) {
-    console.error("Error fetching data from IGDB:", error);
-    throw new Error(`Failed to fetch from IGDB: ${error.message}`);
-  }
-}
+import { queryIGDB } from "@/lib/igdb/client";
 
 // Main handler for the API route
 export async function GET(
@@ -82,7 +8,9 @@ export async function GET(
   { params }: { params: { gameId: string } }
 ) {
   try {
-    const gameId = params.gameId;
+    // Await params before using gameId
+    const resolvedParams = await params;
+    const gameId = resolvedParams.gameId;
 
     // Handle the case where gameId is not provided
     if (!gameId) {
@@ -106,11 +34,13 @@ export async function GET(
 
     // First, check if the game exists and get its similar_games field
     console.log(`Fetching game data for ID: ${gameId}`);
-    const gameResult = await fetchGameData(`
+    const query = `
       fields similar_games, name, genres.name;
       where id = ${gameId};
       limit 1;
-    `);
+    `;
+
+    const gameResult = await queryIGDB("games", query);
 
     if (!gameResult || gameResult.length === 0) {
       console.log(`Game not found with ID: ${gameId}`);
@@ -134,21 +64,25 @@ export async function GET(
         const genreIds = game.genres.map((g: any) => g.id).join(",");
         console.log(`Finding games with genres: ${genreIds}`);
 
-        similarGames = await fetchGameData(`
+        const genreQuery = `
           fields name, cover.url, first_release_date, genres.name, total_rating;
           where genres = (${genreIds}) & id != ${gameId} & cover != null;
           sort total_rating desc;
           limit 6;
-        `);
+        `;
+
+        similarGames = await queryIGDB("games", genreQuery);
       } else {
         // If no genres, just get popular games
         console.log(`No genres found for ${game.name}, finding popular games`);
-        similarGames = await fetchGameData(`
+        const popularQuery = `
           fields name, cover.url, first_release_date, total_rating;
           where total_rating > 75 & cover != null & id != ${gameId};
           sort total_rating desc;
           limit 6;
-        `);
+        `;
+
+        similarGames = await queryIGDB("games", popularQuery);
       }
 
       console.log(`Found ${similarGames.length} alternative similar games`);
@@ -177,11 +111,13 @@ export async function GET(
       `Fetching details for similar game IDs: ${similarGameIds.join(", ")}`
     );
 
-    const similarGamesData = await fetchGameData(`
+    const similarQuery = `
       fields name, cover.url, first_release_date, genres.name, total_rating;
       where id = (${similarGameIds.join(",")}) & cover != null;
       limit 6;
-    `);
+    `;
+
+    const similarGamesData = await queryIGDB("games", similarQuery);
 
     console.log(`Found ${similarGamesData.length} similar games with details`);
 
