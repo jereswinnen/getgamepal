@@ -5,6 +5,7 @@ import GameVideos from "@/components/GameVideos";
 import GameDetails from "@/components/GameDetails";
 import GameCoverBackground from "@/components/GameCoverBackground";
 import SimilarGames from "@/components/SimilarGames";
+import FranchiseGames from "@/components/FranchiseGames";
 
 // Define the Game type
 interface Game {
@@ -50,6 +51,14 @@ interface Game {
   total_rating?: number;
   rating_count?: number;
   similar_games?: {
+    id: number;
+    name: string;
+  }[];
+  franchise?: {
+    id: number;
+    name: string;
+  };
+  franchises?: {
     id: number;
     name: string;
   }[];
@@ -162,6 +171,8 @@ export default async function GamePage({
                   url={game.url}
                   totalRating={game.total_rating}
                   ratingCount={game.rating_count}
+                  franchise={game.franchise}
+                  franchises={game.franchises}
                 />
               </div>
             </div>
@@ -187,6 +198,9 @@ export default async function GamePage({
                 )}
               </div>
             ) : null}
+
+            {/* Franchise Games Section */}
+            <FranchiseGames gameId={game.id} />
 
             {/* Similar Games Section */}
             <SimilarGames gameId={game.id} />

@@ -30,6 +30,8 @@ export interface GameResult {
   dlcs?: GameResult[];
   expansions?: GameResult[];
   parent_game?: GameResult;
+  franchise?: Franchise;
+  franchises?: Franchise[];
   status?: number;
   category?: number;
   themes?: Theme[];
@@ -167,4 +169,15 @@ export interface FeaturedResponse {
   featured: {
     [key: string]: GameResult[];
   };
+}
+
+export interface Franchise {
+  id: number;
+  name: string;
+  slug: string;
+  games?: number[]; // Array of Game IDs that belong to this franchise
+  url?: string;
+  created_at?: number;
+  updated_at?: number;
+  checksum?: string;
 }

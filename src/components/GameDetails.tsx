@@ -1,6 +1,7 @@
 "use client";
 
 import { format, isPast, formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 
 interface Company {
   id: number;
@@ -33,6 +34,14 @@ interface GameDetailsProps {
   url?: string;
   totalRating?: number;
   ratingCount?: number;
+  franchise?: {
+    id: number;
+    name: string;
+  };
+  franchises?: {
+    id: number;
+    name: string;
+  }[];
 }
 
 // Badge component for visual elements like platforms and genres
@@ -103,6 +112,8 @@ export default function GameDetails({
   url,
   totalRating,
   ratingCount,
+  franchise,
+  franchises,
 }: GameDetailsProps) {
   // Format release date and check if it's in the future
   const formattedReleaseDate = releaseDate
@@ -170,6 +181,43 @@ export default function GameDetails({
               Publisher
             </h3>
             <p>{publishers.map((p) => p.name).join(", ")}</p>
+          </div>
+        )}
+
+        {franchise && (
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Franchise
+            </h3>
+            <p className="font-medium">
+              <Link
+                href={`/franchises/${franchise.id}`}
+                className="hover:underline text-blue-600 dark:text-blue-400"
+              >
+                {franchise.name}
+              </Link>
+            </p>
+          </div>
+        )}
+
+        {!franchise && franchises && franchises.length > 0 && (
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Franchises
+            </h3>
+            <p>
+              {franchises.map((f, index) => (
+                <span key={f.id}>
+                  <Link
+                    href={`/franchises/${f.id}`}
+                    className="hover:underline text-blue-600 dark:text-blue-400"
+                  >
+                    {f.name}
+                  </Link>
+                  {index < franchises.length - 1 ? ", " : ""}
+                </span>
+              ))}
+            </p>
           </div>
         )}
 

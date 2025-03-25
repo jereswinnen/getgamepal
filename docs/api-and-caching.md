@@ -90,6 +90,8 @@ GamePal offers several API endpoints organized by domain:
   - Checks cache first
   - Falls back to IGDB API for fresh data
   - Processes image URLs and other data for consistency
+  - Pre-fetches and caches related data (similar games and franchise games)
+  - Background refreshes related data when serving cached responses
   - Caches results for 24 hours
 - **Example**: `/api/games/123`
 - **Returns**: Complete game object with all details needed for the game page
@@ -106,6 +108,32 @@ GamePal offers several API endpoints organized by domain:
   - Caches results for 24 hours
 - **Example**: `/api/games/123/similar`
 - **Returns**: Array of similar games with cover art, name, and release date
+
+#### `/api/games/[gameId]/franchise-games`
+
+- **Method**: GET
+- **Purpose**: Retrieves games from the same franchise as the specified game
+- **Parameters**: `gameId` - IGDB ID of the game
+- **Behavior**:
+  - Checks cache first
+  - Determines the franchise of the game
+  - Fetches other games in the same franchise, excluding the current game
+  - Caches results for 24 hours
+- **Example**: `/api/games/123/franchise-games`
+- **Returns**: Object containing franchise details and an array of games in the franchise
+
+#### `/api/franchises/[franchiseId]`
+
+- **Method**: GET
+- **Purpose**: Retrieves information about a franchise and its games
+- **Parameters**: `franchiseId` - IGDB ID of the franchise
+- **Behavior**:
+  - Checks cache first
+  - Falls back to IGDB franchise and games data
+  - Retrieves full franchise details and all games in the franchise
+  - Caches results for 24 hours
+- **Example**: `/api/franchises/123`
+- **Returns**: Object containing franchise details and an array of games in the franchise
 
 ### Discovery Endpoints
 
@@ -172,6 +200,10 @@ GamePal offers several API endpoints organized by domain:
 2. **Appropriate TTLs**: Consider data freshness requirements when setting cache durations
 3. **Graceful Degradation**: Always handle cache misses properly
 4. **Cache Invalidation**: Clear relevant caches when updating data
+5. **Pre-fetching Related Data**: When serving a primary resource, pre-fetch related resources that are likely to be needed:
+   - Example: The game details endpoint pre-fetches similar games and franchise games
+   - Use asynchronous patterns (like setTimeout) to avoid delaying the primary response
+   - Check if related data is already cached before fetching
 
 ### API Usage Patterns
 
