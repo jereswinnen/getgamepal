@@ -64,7 +64,7 @@ export default function DiscoverError({
           <p className="text-sm text-foreground/60">
             If this problem persists, try refreshing the cache by visiting the{" "}
             <code className="px-2 py-1 bg-black/5 dark:bg-white/5 rounded-md">
-              /api/discovery/refresh
+              /api/discover/refresh
             </code>{" "}
             endpoint.
           </p>

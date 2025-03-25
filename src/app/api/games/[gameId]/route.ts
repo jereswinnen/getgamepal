@@ -60,7 +60,7 @@ export async function GET(
               `Background refresh of similar games for game ID: ${gameId}`
             );
             await fetch(
-              `${request.nextUrl.origin}/api/games/${gameId}/similar`
+              `${request.nextUrl.origin}/api/games/${gameId}/similar-games`
             );
           }
         } catch (err) {
@@ -156,7 +156,9 @@ export async function GET(
 
         // Pre-fetch similar games
         console.log(`Pre-fetching similar games for game ID: ${gameId}`);
-        await fetch(`${request.nextUrl.origin}/api/games/${gameId}/similar`);
+        await fetch(
+          `${request.nextUrl.origin}/api/games/${gameId}/similar-games`
+        );
       } catch (err) {
         console.error("Error pre-fetching related game data:", err);
       }

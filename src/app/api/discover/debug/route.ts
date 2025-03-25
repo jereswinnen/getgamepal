@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cacheManager } from "@/lib/cache";
-import { getAllSectionsMeta } from "@/lib/igdb/discovery";
+import { getAllSectionsMeta } from "@/lib/igdb/discover";
 
 export async function GET(request: NextRequest) {
   try {

@@ -47,7 +47,7 @@ export default function SimilarGames({
         console.log(`Fetching similar games for gameId ${gameId}`);
 
         // Use the dedicated endpoint
-        const response = await fetch(`/api/games/${gameId}/similar`);
+        const response = await fetch(`/api/games/${gameId}/similar-games`);
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));

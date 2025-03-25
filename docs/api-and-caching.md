@@ -96,7 +96,7 @@ GamePal offers several API endpoints organized by domain:
 - **Example**: `/api/games/123`
 - **Returns**: Complete game object with all details needed for the game page
 
-#### `/api/games/[gameId]/similar`
+#### `/api/games/[gameId]/similar-games`
 
 - **Method**: GET
 - **Purpose**: Retrieves games similar to the specified game
@@ -106,7 +106,7 @@ GamePal offers several API endpoints organized by domain:
   - Falls back to IGDB similar_games data
   - If no similar games found, recommends games in the same genre
   - Caches results for 24 hours
-- **Example**: `/api/games/123/similar`
+- **Example**: `/api/games/123/similar-games`
 - **Returns**: Array of similar games with cover art, name, and release date
 
 #### `/api/games/[gameId]/franchise-games`
@@ -137,34 +137,34 @@ GamePal offers several API endpoints organized by domain:
 
 ### Discovery Endpoints
 
-#### `/api/discovery/sections`
+#### `/api/discover/sections`
 
 - **Method**: GET
 - **Purpose**: Retrieves metadata for all discovery sections
 - **Returns**: Array of section objects with id, name, description, and count
 
-#### `/api/discovery/[section]`
+#### `/api/discover/[section]`
 
 - **Method**: GET
 - **Purpose**: Retrieves games in a specific discovery section
 - **Parameters**: `section` - ID of the section (e.g., "trending", "upcoming")
-- **Example**: `/api/discovery/trending`
+- **Example**: `/api/discover/trending`
 - **Returns**: Array of games for the requested section
 
-#### `/api/discovery/featured`
+#### `/api/discover/featured`
 
 - **Method**: GET
 - **Purpose**: Retrieves featured games for the home page
 - **Returns**: Array of highlighted games with additional metadata
 
-#### `/api/discovery/refresh`
+#### `/api/discover/refresh`
 
 - **Method**: POST
 - **Purpose**: Forces refresh of discovery section cache
 - **Parameters**: (optional) `section` - ID of specific section to refresh
 - **Returns**: Status of refresh operation
 
-#### `/api/discovery/debug`
+#### `/api/discover/debug`
 
 - **Method**: GET
 - **Purpose**: Returns debugging information about cache state
@@ -214,7 +214,7 @@ GamePal offers several API endpoints organized by domain:
 
 ### Monitoring and Debugging
 
-1. Use the `/api/discovery/debug` endpoint to monitor cache performance
+1. Use the `/api/discover/debug` endpoint to monitor cache performance
 2. Look for patterns in cache hit/miss ratios
 3. Monitor cache refresh timestamps to ensure data is being updated regularly
 4. Clear cache selectively when troubleshooting data issues

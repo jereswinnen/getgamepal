@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFeaturedGames } from "@/lib/igdb/discovery";
+import { getFeaturedGames } from "@/lib/igdb/discover";
 
 export async function GET(request: NextRequest) {
   try {

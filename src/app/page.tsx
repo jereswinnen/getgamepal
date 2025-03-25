@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getFeaturedGames } from "@/lib/igdb/discovery";
+import { getFeaturedGames } from "@/lib/igdb/discover";
 import { GameResult } from "@/lib/igdb/types";
 
 // Component to display a featured game

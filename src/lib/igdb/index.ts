@@ -2,4 +2,4 @@
 export * from "./client";
 export * from "./types";
 export * from "./sections";
-export * from "./discovery";
+export * from "./discover";

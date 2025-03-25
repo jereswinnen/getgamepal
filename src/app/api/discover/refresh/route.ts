@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { refreshAllSections, getLastRefreshTime } from "@/lib/igdb/discovery";
+import { refreshAllSections, getLastRefreshTime } from "@/lib/igdb/discover";
 import { cacheManager } from "@/lib/cache";
 
 export async function POST(request: NextRequest) {

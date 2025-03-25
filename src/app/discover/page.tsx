@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { getAllSectionsMeta, getSectionGames } from "@/lib/igdb/discovery";
+import { getAllSectionsMeta, getSectionGames } from "@/lib/igdb/discover";
 import { GameResult, DiscoveryResponse } from "@/lib/igdb/types";
 
 // Format a Unix timestamp to a readable date
