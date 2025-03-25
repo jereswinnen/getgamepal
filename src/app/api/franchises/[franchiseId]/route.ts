@@ -77,7 +77,7 @@ export async function GET(
       fields name, cover.url, first_release_date, genres.name, total_rating, slug;
       where id = (${franchise.games.join(",")}) & cover != null;
       sort first_release_date asc;
-      limit 25;
+      limit 50;
     `;
 
     const gamesResult = await queryIGDB("games", gamesQuery);

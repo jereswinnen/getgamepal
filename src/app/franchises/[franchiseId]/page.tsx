@@ -124,44 +124,52 @@ export default async function FranchisePage({
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-              {franchiseData.games.map((game) => (
-                <Link
-                  key={game.id}
-                  href={`/games/${game.id}`}
-                  className="group"
-                >
-                  <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
-                    <GameCover
-                      coverUrl={game.cover?.url}
-                      gameName={game.name}
-                      aspectRatio="3/4"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-                      className="w-full"
-                    />
-                    <div className="p-3">
-                      <h3 className="font-medium text-sm truncate">
-                        {game.name}
-                      </h3>
-                      <div className="flex justify-between items-center mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        <span>{formatDate(game.first_release_date)}</span>
-                        {game.total_rating && (
-                          <span
-                            className={`font-medium ${
-                              game.total_rating >= 75
-                                ? "text-green-600 dark:text-green-400"
-                                : game.total_rating >= 50
-                                ? "text-yellow-600 dark:text-yellow-400"
-                                : "text-red-600 dark:text-red-400"
-                            }`}
-                          >
-                            {Math.round(game.total_rating)}%
-                          </span>
-                        )}
+              {franchiseData.games
+                .sort((a, b) => {
+                  // If either game doesn't have a release date
+                  if (!a.first_release_date) return 1; // Place games without dates at the end
+                  if (!b.first_release_date) return -1;
+                  // Sort newest to oldest
+                  return b.first_release_date - a.first_release_date;
+                })
+                .map((game) => (
+                  <Link
+                    key={game.id}
+                    href={`/games/${game.id}`}
+                    className="group"
+                  >
+                    <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
+                      <GameCover
+                        coverUrl={game.cover?.url}
+                        gameName={game.name}
+                        aspectRatio="3/4"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+                        className="w-full"
+                      />
+                      <div className="p-3">
+                        <h3 className="font-medium text-sm truncate">
+                          {game.name}
+                        </h3>
+                        <div className="flex justify-between items-center mt-1 text-xs text-gray-500 dark:text-gray-400">
+                          <span>{formatDate(game.first_release_date)}</span>
+                          {game.total_rating && (
+                            <span
+                              className={`font-medium ${
+                                game.total_rating >= 75
+                                  ? "text-green-600 dark:text-green-400"
+                                  : game.total_rating >= 50
+                                  ? "text-yellow-600 dark:text-yellow-400"
+                                  : "text-red-600 dark:text-red-400"
+                              }`}
+                            >
+                              {Math.round(game.total_rating)}%
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
             </div>
           )}
 
