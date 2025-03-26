@@ -1,8 +1,15 @@
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { getAllSectionsMeta, getSectionGames } from "@/lib/igdb/discover";
 import { GameResult, DiscoveryResponse } from "@/lib/igdb/types";
+
+export const metadata: Metadata = {
+  title: "Discover Games",
+  description:
+    "Explore curated collections of games and find your next gaming adventure.",
+};
 
 // Format a Unix timestamp to a readable date
 function formatDate(timestamp?: number): string {

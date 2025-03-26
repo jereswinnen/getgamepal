@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import GameCover from "@/components/GameCover";
 import { format } from "date-fns";
 
@@ -66,6 +67,26 @@ async function getFranchiseData(
     console.error("Error fetching franchise data:", error);
     return null;
   }
+}
+
+// Generate metadata for the page dynamically
+export async function generateMetadata({
+  params,
+}: {
+  params: { franchiseId: string };
+}): Promise<Metadata> {
+  // Fetch franchise data
+  const franchiseData = await getFranchiseData(params.franchiseId);
+
+  // Return title and description
+  return {
+    title: franchiseData
+      ? `${franchiseData.franchise.name} Franchise`
+      : "Franchise Not Found",
+    description: franchiseData
+      ? `Explore the ${franchiseData.franchise.name} franchise and its ${franchiseData.games.length} games`
+      : "View franchise details on GamePal",
+  };
 }
 
 export default async function FranchisePage({

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import GameCover from "@/components/GameCover";
 import GameScreenshots from "@/components/GameScreenshots";
 import GameVideos from "@/components/GameVideos";
@@ -62,6 +63,22 @@ interface Game {
     id: number;
     name: string;
   }[];
+}
+
+// Generate metadata for the page dynamically
+export async function generateMetadata({
+  params,
+}: {
+  params: { igdbId: string };
+}): Promise<Metadata> {
+  // Fetch game data
+  const game = await getGameData(params.igdbId);
+
+  // Return title and description
+  return {
+    title: game?.name || "Game Not Found",
+    description: game?.summary || "View game details on GamePal",
+  };
 }
 
 // Function to get the game data from IGDB

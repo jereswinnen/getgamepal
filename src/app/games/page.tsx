@@ -1,5 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import GameCover from "@/components/GameCover";
+
+export const metadata: Metadata = {
+  title: "Popular Games",
+  description: "Explore the most popular games on GamePal",
+};
 
 // Define the Game type
 interface Game {

@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GamePal - Remember your gaming memories",
+  title: {
+    template: "%s - GamePal",
+    default: "GamePal - Remember your gaming memories",
+  },
   description:
     "Discover, track, and share your gaming experiences with GamePal, powered by IGDB.",
 };
