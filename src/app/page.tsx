@@ -56,7 +56,7 @@ export default async function Home() {
     <>
       <section className="max-w-4xl mx-auto text-center mb-16">
         <h2 className="text-4xl font-bold mb-6">
-          Your Ultimate Gaming Companion
+          Remember your gaming memories
         </h2>
         <p className="text-xl mb-8">
           GamePal helps you discover, track, and share your gaming experiences

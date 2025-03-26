@@ -72,7 +72,7 @@ export async function GET(
       return NextResponse.json(emptyResponse);
     }
 
-    // Get the games in the franchise
+    // Get the games in the franchise - limit increased from 25 to 50
     const gamesQuery = `
       fields name, cover.url, first_release_date, genres.name, total_rating, slug;
       where id = (${franchise.games.join(",")}) & cover != null;
