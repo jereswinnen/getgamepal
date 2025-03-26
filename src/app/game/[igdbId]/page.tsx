@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import GameCover from "@/components/GameCover";
 import GameScreenshots from "@/components/GameScreenshots";
 import GameVideos from "@/components/GameVideos";
