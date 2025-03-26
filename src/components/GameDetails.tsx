@@ -4,6 +4,7 @@ import { format, isPast, formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { IconExternalLink } from "@tabler/icons-react";
 
 interface Company {
   id: number;
@@ -52,27 +53,27 @@ function RatingDisplay({ rating, count }: { rating?: number; count?: number }) {
 
   const ratingValue = Math.round(rating);
 
-  // Determine variant based on rating
-  let variant: "default" | "secondary" | "destructive" = "default";
-  if (ratingValue < 50) {
-    variant = "destructive";
-  } else if (ratingValue < 75) {
-    variant = "secondary";
-  }
-
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-2">
-        <Badge variant={variant} className="text-lg px-3 py-1">
+      <div className="flex items-baseline gap-2">
+        <span
+          className={`text-2xl font-bold ${
+            ratingValue < 50
+              ? "text-red-600 dark:text-red-400"
+              : ratingValue < 75
+              ? "text-yellow-600 dark:text-yellow-400"
+              : "text-green-600 dark:text-green-400"
+          }`}
+        >
           {ratingValue}%
-        </Badge>
+        </span>
         {count && count > 0 && (
           <span className="text-sm text-gray-500 dark:text-gray-400">
             from {count} {count === 1 ? "rating" : "ratings"}
           </span>
         )}
       </div>
-      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full mt-2">
+      <div className="w-full h-2 bg-black/10 dark:bg-white/10 rounded-full mt-2">
         <div
           className={`h-2 rounded-full ${
             ratingValue < 50
@@ -241,29 +242,10 @@ export default function GameDetails({
 
       <div className="mt-4 border-t pt-4 border-gray-200 dark:border-gray-700">
         <Button variant="outline" asChild>
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2"
-          >
-            <span>View on IGDB</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
-          </a>
+          <Link href={url || ""} target="_blank" rel="noopener noreferrer">
+            View on IGDB
+            <IconExternalLink />
+          </Link>
         </Button>
       </div>
     </div>

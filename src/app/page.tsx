@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { getFeaturedGames } from "@/lib/igdb/discover";
 import { GameResult } from "@/lib/igdb/types";
+import { Button } from "@/components/ui/button";
+import { IconArrowRight } from "@tabler/icons-react";
 
 // Component to display a featured game
 function FeaturedGame({ game }: { game: GameResult }) {
@@ -82,9 +84,12 @@ export default async function Home() {
         <section className="mb-16">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">{showcaseSection.name}</h2>
-            <Link href="/discover" className="text-foreground hover:underline">
-              View All Categories →
-            </Link>
+            <Button variant="outline" asChild>
+              <Link href="/discover">
+                Go to discover
+                <IconArrowRight />
+              </Link>
+            </Button>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {showcaseGames.map((game) => (
