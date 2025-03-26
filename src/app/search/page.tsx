@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import SearchInput from "@/components/SearchInput";
-import GameSearchResult from "@/components/GameSearchResult";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import GameCover from "@/components/GameCover";
 
 interface Game {
   id: number;
@@ -19,10 +20,19 @@ interface Game {
 }
 
 export default function SearchPage() {
+  const searchParams = useSearchParams();
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
+
+  // Handle initial search from URL parameter
+  useEffect(() => {
+    const query = searchParams.get("q");
+    if (query) {
+      handleSearch(query);
+    }
+  }, [searchParams]);
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) {
@@ -58,18 +68,8 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Search Games</h1>
-
-      <div className="mb-8">
-        <SearchInput
-          onSearch={handleSearch}
-          placeholder="Search for games..."
-        />
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-          Enter a game title and press Search or hit Enter
-        </p>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Search Results</h1>
 
       <div className="space-y-2">
         {isLoading && (
@@ -102,13 +102,37 @@ export default function SearchPage() {
 
         {!isLoading && !hasSearched && (
           <div className="text-center py-8 text-gray-600 dark:text-gray-400">
-            <p>Enter a search term and press Search to find games</p>
+            <p>Use the search bar in the header to find games</p>
           </div>
         )}
 
-        {searchResults.map((game) => (
-          <GameSearchResult key={game.id} game={game} />
-        ))}
+        {searchResults.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            {searchResults.map((game) => (
+              <Link key={game.id} href={`/games/${game.id}`} className="group">
+                <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
+                  <GameCover
+                    coverUrl={game.cover?.url}
+                    gameName={game.name}
+                    aspectRatio="3/4"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+                    className="w-full"
+                  />
+                  <div className="p-3">
+                    <h3 className="font-medium text-sm truncate">
+                      {game.name}
+                    </h3>
+                    {game.first_release_date && (
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        {new Date(game.first_release_date * 1000).getFullYear()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
