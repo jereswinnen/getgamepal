@@ -40,7 +40,7 @@ export default function FranchiseGames({ gameId }: FranchiseGamesProps) {
         console.log(`Fetching franchise games for game ID ${gameId}`);
 
         // Use the dedicated game-specific endpoint
-        const response = await fetch(`/api/games/${gameId}/franchise-games`);
+        const response = await fetch(`/api/game/${gameId}/franchise-games`);
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
@@ -136,7 +136,7 @@ export default function FranchiseGames({ gameId }: FranchiseGamesProps) {
         <h2 className="text-xl font-semibold">{franchiseName} Series</h2>
         {franchiseId && (
           <Link
-            href={`/franchises/${franchiseId}`}
+            href={`/franchise/${franchiseId}`}
             className="text-sm hover:underline text-blue-600 dark:text-blue-400"
           >
             See all
@@ -154,7 +154,7 @@ export default function FranchiseGames({ gameId }: FranchiseGamesProps) {
           })
           .slice(0, 6)
           .map((game) => (
-            <Link key={game.id} href={`/games/${game.id}`} className="group">
+            <Link key={game.id} href={`/game/${game.id}`} className="group">
               <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
                 <GameCover
                   coverUrl={game.cover?.url}

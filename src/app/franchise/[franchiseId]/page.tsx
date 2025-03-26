@@ -50,7 +50,7 @@ async function getFranchiseData(
     const baseUrl = `${protocol}://${host}`;
 
     // Use our dedicated franchise endpoint
-    const response = await fetch(`${baseUrl}/api/franchises/${franchiseId}`, {
+    const response = await fetch(`${baseUrl}/api/franchise/${franchiseId}`, {
       next: { revalidate: 3600 }, // Revalidate every hour at most
     });
 
@@ -160,7 +160,7 @@ export default async function FranchisePage({
                 .map((game) => (
                   <Link
                     key={game.id}
-                    href={`/games/${game.id}`}
+                    href={`/game/${game.id}`}
                     className="group"
                   >
                     <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">

@@ -182,7 +182,7 @@ export default function GameDetails({
             </h3>
             <p className="font-medium">
               <Link
-                href={`/franchises/${franchise.id}`}
+                href={`/franchise/${franchise.id}`}
                 className="hover:underline text-blue-600 dark:text-blue-400"
               >
                 {franchise.name}
@@ -200,7 +200,7 @@ export default function GameDetails({
               {franchises.map((f, index) => (
                 <span key={f.id}>
                   <Link
-                    href={`/franchises/${f.id}`}
+                    href={`/franchise/${f.id}`}
                     className="hover:underline text-blue-600 dark:text-blue-400"
                   >
                     {f.name}

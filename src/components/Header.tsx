@@ -41,13 +41,8 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link href="/games" className="hover:underline">
+                <Link href="/game" className="hover:underline">
                   Games
-                </Link>
-              </li>
-              <li>
-                <Link href="/search" className="hover:underline">
-                  Search
                 </Link>
               </li>
             </ul>

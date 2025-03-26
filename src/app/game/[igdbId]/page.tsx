@@ -95,7 +95,7 @@ async function getGameData(igdbId: string): Promise<Game | null> {
     const baseUrl = `${protocol}://${host}`;
 
     // Use our dedicated cached game endpoint
-    const response = await fetch(`${baseUrl}/api/games/${igdbId}`, {
+    const response = await fetch(`${baseUrl}/api/game/${igdbId}`, {
       next: { revalidate: 3600 }, // Revalidate every hour at most
     });
 
@@ -226,15 +226,6 @@ export default async function GamePage({
 
             {/* Similar Games Section */}
             <SimilarGames gameId={game.id} />
-
-            <div className="mt-8">
-              <Button asChild className="mr-4">
-                <Link href="/discover">Discover Games</Link>
-              </Button>
-              <Button variant="outline" asChild>
-                <Link href="/games">All Games</Link>
-              </Button>
-            </div>
           </div>
         </>
       ) : (

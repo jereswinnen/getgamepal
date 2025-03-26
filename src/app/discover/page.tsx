@@ -49,7 +49,7 @@ function GameCard({ game }: { game: GameResult }) {
   const rating = formatRating(game.total_rating);
 
   return (
-    <Link href={`/games/${game.id}`} className="block group">
+    <Link href={`/game/${game.id}`} className="block group">
       <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
         <div className="relative aspect-[3/4] overflow-hidden bg-black/10 dark:bg-white/10">
           {coverUrl ? (

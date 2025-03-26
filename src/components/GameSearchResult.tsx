@@ -37,7 +37,7 @@ export default function GameSearchResult({ game }: GameSearchResultProps) {
 
   return (
     <Link
-      href={`/games/${game.id}`}
+      href={`/game/${game.id}`}
       className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
     >
       <div className="h-16 w-12 flex-shrink-0">

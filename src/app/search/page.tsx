@@ -109,7 +109,7 @@ export default function SearchPage() {
         {searchResults.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
             {searchResults.map((game) => (
-              <Link key={game.id} href={`/games/${game.id}`} className="group">
+              <Link key={game.id} href={`/game/${game.id}`} className="group">
                 <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
                   <GameCover
                     coverUrl={game.cover?.url}

@@ -49,7 +49,7 @@ export async function GET(
               `Background refresh of franchise games for game ID: ${gameId}`
             );
             await fetch(
-              `${request.nextUrl.origin}/api/games/${gameId}/franchise-games`
+              `${request.nextUrl.origin}/api/game/${gameId}/franchise-games`
             );
           }
 
@@ -60,7 +60,7 @@ export async function GET(
               `Background refresh of similar games for game ID: ${gameId}`
             );
             await fetch(
-              `${request.nextUrl.origin}/api/games/${gameId}/similar-games`
+              `${request.nextUrl.origin}/api/game/${gameId}/similar-games`
             );
           }
         } catch (err) {
@@ -150,14 +150,14 @@ export async function GET(
         if (game.franchise || (game.franchises && game.franchises.length > 0)) {
           console.log(`Pre-fetching franchise games for game ID: ${gameId}`);
           await fetch(
-            `${request.nextUrl.origin}/api/games/${gameId}/franchise-games`
+            `${request.nextUrl.origin}/api/game/${gameId}/franchise-games`
           );
         }
 
         // Pre-fetch similar games
         console.log(`Pre-fetching similar games for game ID: ${gameId}`);
         await fetch(
-          `${request.nextUrl.origin}/api/games/${gameId}/similar-games`
+          `${request.nextUrl.origin}/api/game/${gameId}/similar-games`
         );
       } catch (err) {
         console.error("Error pre-fetching related game data:", err);

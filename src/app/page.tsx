@@ -10,7 +10,7 @@ function FeaturedGame({ game }: { game: GameResult }) {
     : null;
 
   return (
-    <Link href={`/games/${game.id}`} className="block group">
+    <Link href={`/game/${game.id}`} className="block group">
       <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-black/10 dark:bg-white/10">
         {coverUrl ? (
           <Image
