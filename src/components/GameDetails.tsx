@@ -2,6 +2,8 @@
 
 import { format, isPast, formatDistanceToNow } from "date-fns";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface Company {
   id: number;
@@ -44,41 +46,26 @@ interface GameDetailsProps {
   }[];
 }
 
-// Badge component for visual elements like platforms and genres
-function Badge({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`inline-block bg-black/5 dark:bg-white/10 px-3 py-1 rounded-full text-sm mr-2 mb-2 ${className}`}
-    >
-      {children}
-    </span>
-  );
-}
-
 // Rating component
 function RatingDisplay({ rating, count }: { rating?: number; count?: number }) {
   if (!rating) return null;
 
   const ratingValue = Math.round(rating);
 
-  // Determine color based on rating
-  let colorClass = "text-green-600 dark:text-green-400";
+  // Determine variant based on rating
+  let variant: "default" | "secondary" | "destructive" = "default";
   if (ratingValue < 50) {
-    colorClass = "text-red-600 dark:text-red-400";
+    variant = "destructive";
   } else if (ratingValue < 75) {
-    colorClass = "text-yellow-600 dark:text-yellow-400";
+    variant = "secondary";
   }
 
   return (
     <div className="mb-6">
       <div className="flex items-center gap-2">
-        <div className={`text-3xl font-bold ${colorClass}`}>{ratingValue}%</div>
+        <Badge variant={variant} className="text-lg px-3 py-1">
+          {ratingValue}%
+        </Badge>
         {count && count > 0 && (
           <span className="text-sm text-gray-500 dark:text-gray-400">
             from {count} {count === 1 ? "rating" : "ratings"}
@@ -143,9 +130,11 @@ export default function GameDetails({
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
             Platforms
           </h3>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap gap-2">
             {platforms.map((platform) => (
-              <Badge key={platform.id}>{platform.name}</Badge>
+              <Badge key={platform.id} variant="secondary">
+                {platform.name}
+              </Badge>
             ))}
           </div>
         </div>
@@ -157,9 +146,11 @@ export default function GameDetails({
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
             Genres
           </h3>
-          <div className="flex flex-wrap">
+          <div className="flex flex-wrap gap-2">
             {genres.map((genre) => (
-              <Badge key={genre.id}>{genre.name}</Badge>
+              <Badge key={genre.id} variant="secondary">
+                {genre.name}
+              </Badge>
             ))}
           </div>
         </div>
@@ -249,29 +240,31 @@ export default function GameDetails({
       </div>
 
       <div className="mt-4 border-t pt-4 border-gray-200 dark:border-gray-700">
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
-        >
-          <span>View on IGDB</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        <Button variant="outline" asChild>
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2"
           >
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-        </a>
+            <span>View on IGDB</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </Button>
       </div>
     </div>
   );

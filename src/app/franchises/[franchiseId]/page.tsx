@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import GameCover from "@/components/GameCover";
 import { format } from "date-fns";
 
@@ -113,29 +115,31 @@ export default async function FranchisePage({
               franchise
             </p>
             {franchiseData.franchise.url && (
-              <a
-                href={franchiseData.franchise.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 transition-colors"
-              >
-                <span>View Franchise on IGDB</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+              <Button variant="outline" asChild>
+                <a
+                  href={franchiseData.franchise.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2"
                 >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
-              </a>
+                  <span>View Franchise on IGDB</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                </a>
+              </Button>
             )}
           </div>
 
@@ -174,17 +178,17 @@ export default async function FranchisePage({
                         <div className="flex justify-between items-center mt-1 text-xs text-gray-500 dark:text-gray-400">
                           <span>{formatDate(game.first_release_date)}</span>
                           {game.total_rating && (
-                            <span
-                              className={`font-medium ${
+                            <Badge
+                              variant={
                                 game.total_rating >= 75
-                                  ? "text-green-600 dark:text-green-400"
+                                  ? "default"
                                   : game.total_rating >= 50
-                                  ? "text-yellow-600 dark:text-yellow-400"
-                                  : "text-red-600 dark:text-red-400"
-                              }`}
+                                  ? "secondary"
+                                  : "destructive"
+                              }
                             >
                               {Math.round(game.total_rating)}%
-                            </span>
+                            </Badge>
                           )}
                         </div>
                       </div>
@@ -195,12 +199,9 @@ export default async function FranchisePage({
           )}
 
           <div className="mt-12">
-            <Link
-              href="/games"
-              className="rounded-full bg-black/5 dark:bg-white/10 px-6 py-3 font-medium hover:bg-black/10 dark:hover:bg-white/20 transition-colors inline-block"
-            >
-              Back to Games
-            </Link>
+            <Button variant="outline" asChild>
+              <Link href="/games">Back to Games</Link>
+            </Button>
           </div>
         </>
       ) : (
@@ -209,12 +210,9 @@ export default async function FranchisePage({
           <p className="mb-8">
             We couldn't find a franchise with the ID: {franchiseId}
           </p>
-          <Link
-            href="/games"
-            className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block"
-          >
-            Back to Games
-          </Link>
+          <Button asChild>
+            <Link href="/games">Back to Games</Link>
+          </Button>
         </div>
       )}
     </div>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import GameCover from "@/components/GameCover";
 import GameScreenshots from "@/components/GameScreenshots";
 import GameVideos from "@/components/GameVideos";
@@ -226,18 +228,12 @@ export default async function GamePage({
             <SimilarGames gameId={game.id} />
 
             <div className="mt-8">
-              <Link
-                href="/discover"
-                className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block mr-4"
-              >
-                Discover Games
-              </Link>
-              <Link
-                href="/games"
-                className="rounded-full bg-black/5 dark:bg-white/10 px-6 py-3 font-medium hover:bg-black/10 dark:hover:bg-white/20 transition-colors inline-block"
-              >
-                All Games
-              </Link>
+              <Button asChild className="mr-4">
+                <Link href="/discover">Discover Games</Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="/games">All Games</Link>
+              </Button>
             </div>
           </div>
         </>
@@ -245,12 +241,9 @@ export default async function GamePage({
         <div className="max-w-4xl mx-auto text-center bg-white/90 dark:bg-gray-900/90 p-6 rounded-xl shadow-xl">
           <h1 className="text-3xl font-bold mb-4">Game Not Found</h1>
           <p className="mb-8">We couldn't find a game with the ID: {igdbId}</p>
-          <Link
-            href="/games"
-            className="rounded-full bg-foreground text-background px-6 py-3 font-medium hover:bg-[#383838] dark:hover:bg-[#ccc] transition-colors inline-block"
-          >
-            Back to Games
-          </Link>
+          <Button asChild>
+            <Link href="/games">Back to Games</Link>
+          </Button>
         </div>
       )}
     </>
