@@ -11,6 +11,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { IconSearch } from "@tabler/icons-react";
 
 export default function Header() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function Header() {
     e.preventDefault();
     if (searchTerm.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm("");
     }
   };
 
@@ -80,26 +82,16 @@ export default function Header() {
 
             <form onSubmit={handleSearch}>
               <div className="relative">
-                <svg
-                  className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
+                <IconSearch
+                  size={16}
+                  className="absolute left-2 top-2.5 text-muted-foreground"
+                />
                 <input
                   type="search"
                   value={searchTerm}
                   onChange={handleInputChange}
-                  className="h-9 w-[200px] rounded-md border border-input bg-transparent px-8 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-search-cancel-button]:hidden"
-                  placeholder="Search games..."
+                  className="h-fit w-[200px] rounded-md border border-input bg-white dark:bg-black px-8 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-search-cancel-button]:hidden"
+                  placeholder="Search..."
                 />
               </div>
             </form>
