@@ -71,8 +71,11 @@ export async function generateMetadata({
 }: {
   params: { igdbId: string };
 }): Promise<Metadata> {
+  // Await params before using igdbId
+  const resolvedParams = await params;
+
   // Fetch game data
-  const game = await getGameData(params.igdbId);
+  const game = await getGameData(resolvedParams.igdbId);
 
   // Return title and description
   return {
