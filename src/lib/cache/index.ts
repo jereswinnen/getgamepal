@@ -3,9 +3,12 @@ import { createClient } from "redis";
 import { promises as fs } from "fs";
 import path from "path";
 
+// Cache duration in seconds (30 minutes)
+export const CACHE_DURATION = 30 * 60; // 24 * 60 * 60 (24 hours)
+
 // Initialize in-memory cache
 const memoryCache = new NodeCache({
-  stdTTL: 24 * 60 * 60, // 24 hours
+  stdTTL: CACHE_DURATION,
   checkperiod: 60 * 60, // Check for expired keys every hour
 });
 
@@ -122,7 +125,7 @@ export const cacheManager: CacheManager = {
     if (redisConnected && redisClient) {
       try {
         await redisClient.set(key, JSON.stringify(data), {
-          EX: 24 * 60 * 60, // 24 hours
+          EX: CACHE_DURATION,
         });
       } catch (error) {
         console.error("Redis set error:", error);

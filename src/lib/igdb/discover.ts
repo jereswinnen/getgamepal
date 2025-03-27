@@ -1,6 +1,6 @@
 import { queryIGDB } from "./client";
 import { discoverySections, getSectionById } from "./sections";
-import { cacheManager } from "../cache";
+import { cacheManager, CACHE_DURATION } from "../cache";
 import {
   DiscoveryResponse,
   FeaturedResponse,
@@ -12,9 +12,6 @@ import {
 const DISCOVERY_CACHE_PREFIX = "discovery:";
 const ALL_SECTIONS_CACHE_KEY = `${DISCOVERY_CACHE_PREFIX}all_sections`;
 const LAST_REFRESH_KEY = `${DISCOVERY_CACHE_PREFIX}last_refresh`;
-
-// Cache TTL in seconds (24 hours)
-const CACHE_TTL = 24 * 60 * 60;
 
 /**
  * Format cover URLs to use https and the appropriate size
