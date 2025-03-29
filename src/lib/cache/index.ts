@@ -3,13 +3,15 @@ import { createClient } from "redis";
 import { promises as fs } from "fs";
 import path from "path";
 
-// Cache duration in seconds (30 minutes)
-export const CACHE_DURATION = 30 * 60; // 24 * 60 * 60 (24 hours)
+// Cache duration in seconds
+export const CACHE_DURATION = 24 * 60 * 60; // 24 hours
+//export const CACHE_DURATION = 10 * 60; // 10 minutes
 
 // Initialize in-memory cache
 const memoryCache = new NodeCache({
   stdTTL: CACHE_DURATION,
   checkperiod: 60 * 60, // Check for expired keys every hour
+  //checkperiod: 2 * 60, // Check for expired keys every 2 minutes
 });
 
 // Redis client setup
