@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, FormEvent, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { AppStoreLogo, MagnifyingGlass, User } from "@phosphor-icons/react";
 
 export default function Header() {
   const router = useRouter();
@@ -80,11 +80,30 @@ export default function Header() {
               </div>
             </form>
 
-            <Button variant="default" size="sm">
-              <Link href="/" target="_blank" rel="noopener noreferrer">
-                Download for iOS
-              </Link>
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button variant="outline" size="sm">
+                <Link
+                  href="/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1"
+                >
+                  <AppStoreLogo size={16} weight="bold" />
+                  Download for iOS
+                </Link>
+              </Button>
+              <Button variant="default" size="sm">
+                <Link
+                  href="/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1"
+                >
+                  <User size={16} weight="bold" />
+                  My Account
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
