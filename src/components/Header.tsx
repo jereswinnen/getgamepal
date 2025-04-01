@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, FormEvent, ChangeEvent } from "react";
 import { IconSearch } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { Binary, GameController } from "@phosphor-icons/react";
 
 export default function Header() {
   const router = useRouter();
@@ -29,13 +30,7 @@ export default function Header() {
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Link href="/" className="relative">
-              <Image
-                src="/branding@2x.png"
-                alt="GamePal"
-                width={40}
-                height={40}
-                priority
-              />
+              <GameController size={40} weight="duotone" />
             </Link>
 
             <nav>

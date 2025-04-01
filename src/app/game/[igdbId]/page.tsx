@@ -154,10 +154,10 @@ export default async function GamePage({
     <>
       {game ? (
         <>
-          <GameCoverBackground
+          {/* <GameCoverBackground
             coverUrl={game.cover?.url}
             gameName={game.name}
-          />
+          /> */}
 
           <div className="relative z-10 mx-auto">
             <div className="flex flex-col md:flex-row gap-8 mb-8">
