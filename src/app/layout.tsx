@@ -25,9 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} font-sans antialiased min-h-screen`}>
+      <body
+        className={`${dmSans.variable} o-wrapper font-sans antialiased min-h-screen`}
+      >
         <Header />
-        <main className="container mx-auto py-12">{children}</main>
+        <main className="o-grid py-12">{children}</main>
         <Footer />
       </body>
     </html>

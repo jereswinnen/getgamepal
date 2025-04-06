@@ -152,72 +152,62 @@ export default async function GamePage({
   return (
     <>
       {game ? (
-        <div className="relative z-10 mx-auto">
-          <div className="flex flex-col md:flex-row gap-8 mb-8">
-            <div className="w-full md:w-1/3">
-              <GameCover
-                coverUrl={game.cover?.url}
+        <div className="o-grid--inner">
+          <aside>
+            <GameCover
+              coverUrl={game.cover?.url}
+              gameName={game.name}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          </aside>
+
+          <main className="md:col-start-2 md:col-end-6 flex flex-col gap-9">
+            {game.screenshots && game.screenshots.length > 0 ? (
+              <GameScreenshots
+                screenshots={game.screenshots}
                 gameName={game.name}
-                sizes="(max-width: 768px) 100vw, 33vw"
               />
-            </div>
+            ) : null}
 
-            <div className="w-full md:w-2/3">
-              <h1 className="text-3xl font-bold mb-4">{game.name}</h1>
-
+            <header className="flex flex-col">
+              <h1 className="text-3xl font-bold">{game.name}</h1>
               {game.summary && (
-                <div className="mb-6">
-                  <h2 className="text-xl font-semibold mb-2">Summary</h2>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    {game.summary}
-                  </p>
-                </div>
+                <p className="text-lg text-gray-700 dark:text-gray-300">
+                  {game.summary}
+                </p>
               )}
+            </header>
 
-              <GameDetails
-                platforms={game.platforms}
-                developers={getDevelopers(game)}
-                publishers={getPublishers(game)}
-                releaseDate={game.first_release_date}
-                genres={game.genres}
-                gameModes={game.game_modes}
-                igdbId={game.id}
-                url={game.url}
-                totalRating={game.total_rating}
-                ratingCount={game.rating_count}
-                franchise={game.franchise}
-                franchises={game.franchises}
-              />
-            </div>
-          </div>
+            <GameDetails
+              platforms={game.platforms}
+              developers={getDevelopers(game)}
+              publishers={getPublishers(game)}
+              releaseDate={game.first_release_date}
+              genres={game.genres}
+              gameModes={game.game_modes}
+              igdbId={game.id}
+              url={game.url}
+              totalRating={game.total_rating}
+              ratingCount={game.rating_count}
+              franchise={game.franchise}
+              franchises={game.franchises}
+            />
 
-          {(game.screenshots && game.screenshots.length > 0) ||
-          (game.videos && game.videos.length > 0) ? (
-            <div className="space-y-8 mb-8">
-              {game.screenshots && game.screenshots.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">Screenshots</h2>
-                  <GameScreenshots
-                    screenshots={game.screenshots}
-                    gameName={game.name}
-                  />
-                </div>
-              )}
+            {game.videos && game.videos.length > 0 ? (
+              <div className="space-y-8 mb-8">
+                {game.videos && game.videos.length > 0 && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-4">Videos</h2>
+                    <GameVideos videos={game.videos} />
+                  </div>
+                )}
+              </div>
+            ) : null}
 
-              {game.videos && game.videos.length > 0 && (
-                <div>
-                  <h2 className="text-xl font-semibold mb-4">Videos</h2>
-                  <GameVideos videos={game.videos} />
-                </div>
-              )}
-            </div>
-          ) : null}
+            <FranchiseGames gameId={game.id} />
 
-          {/* Franchise Games Section */}
-          <FranchiseGames gameId={game.id} />
-
-          {/* Similar Games Section */}
-          <SimilarGames gameId={game.id} />
+            <SimilarGames gameId={game.id} />
+          </main>
         </div>
       ) : (
         <div className="max-w-4xl mx-auto text-center bg-white/90 dark:bg-gray-900/90 p-6 rounded-xl shadow-xl">

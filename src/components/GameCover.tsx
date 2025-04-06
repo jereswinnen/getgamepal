@@ -26,16 +26,25 @@ export default function GameCover({
 
   return (
     <div
-      className={`relative aspect-[${aspectRatio}] w-full overflow-hidden rounded-xl ${className}`}
+      className={`relative aspect-[${aspectRatio}] w-full [&>*]:rounded-md ${className}`}
     >
       {formattedCoverUrl ? (
-        <Image
-          src={formattedCoverUrl}
-          alt={`${gameName} cover`}
-          fill
-          className="object-cover"
-          sizes={sizes}
-        />
+        <>
+          <Image
+            src={formattedCoverUrl}
+            alt=""
+            fill
+            className="absolute -z-10 translate-y-[2px] blur-xs opacity-30"
+            sizes={sizes}
+          />
+          <Image
+            src={formattedCoverUrl}
+            alt={`${gameName} cover`}
+            fill
+            className="object-cover"
+            sizes={sizes}
+          />
+        </>
       ) : (
         <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-800">
           <span className="text-gray-500 dark:text-gray-400 text-sm text-center px-2">
