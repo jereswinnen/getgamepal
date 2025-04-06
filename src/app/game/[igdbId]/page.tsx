@@ -7,6 +7,7 @@ import GameVideos from "@/components/GameVideos";
 import GameDetails from "@/components/GameDetails";
 import SimilarGames from "@/components/SimilarGames";
 import FranchiseGames from "@/components/FranchiseGames";
+import GameReleaseDate from "@/components/GameReleaseDate";
 
 // Define the Game type
 interface Game {
@@ -170,6 +171,10 @@ export default async function GamePage({
             ) : null}
 
             <header className="flex flex-col">
+              <GameReleaseDate
+                timestamp={game.first_release_date}
+                className="text-sm text-gray-600 dark:text-gray-400"
+              />
               <h1 className="text-3xl font-bold">{game.name}</h1>
               {game.summary && (
                 <p className="text-lg text-gray-700 dark:text-gray-300">

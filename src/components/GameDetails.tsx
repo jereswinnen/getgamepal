@@ -103,23 +103,6 @@ export default function GameDetails({
   franchise,
   franchises,
 }: GameDetailsProps) {
-  // Format release date and check if it's in the future
-  const formattedReleaseDate = releaseDate
-    ? new Date(releaseDate * 1000)
-    : undefined;
-
-  const isReleased = formattedReleaseDate
-    ? isPast(formattedReleaseDate)
-    : false;
-
-  const releaseDateDisplay = formattedReleaseDate
-    ? isReleased
-      ? format(formattedReleaseDate, "MMMM d, yyyy")
-      : `${format(formattedReleaseDate, "MMMM d, yyyy")} (${formatDistanceToNow(
-          formattedReleaseDate
-        )} from now)`
-    : "Unknown";
-
   return (
     <div>
       {/* Rating display if available */}
@@ -209,23 +192,6 @@ export default function GameDetails({
                   {index < franchises.length - 1 ? ", " : ""}
                 </span>
               ))}
-            </p>
-          </div>
-        )}
-
-        {releaseDate && (
-          <div>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Release Date
-            </h3>
-            <p
-              className={
-                !isReleased
-                  ? "font-medium text-blue-600 dark:text-blue-400"
-                  : ""
-              }
-            >
-              {releaseDateDisplay}
             </p>
           </div>
         )}
