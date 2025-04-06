@@ -8,6 +8,7 @@ import GameDetails from "@/components/GameDetails";
 import SimilarGames from "@/components/SimilarGames";
 import FranchiseGames from "@/components/FranchiseGames";
 import GameReleaseDate from "@/components/GameReleaseDate";
+import SectionDivider from "@/components/SectionDivider";
 
 // Define the Game type
 interface Game {
@@ -170,18 +171,20 @@ export default async function GamePage({
               />
             ) : null}
 
-            <header className="flex flex-col">
+            <header className="flex flex-col gap-1.5">
               <GameReleaseDate
                 timestamp={game.first_release_date}
                 className="text-sm text-gray-600 dark:text-gray-400"
               />
-              <h1 className="text-3xl font-bold">{game.name}</h1>
+              <h1 className="text-3xl font-bold tracking-tight">{game.name}</h1>
               {game.summary && (
                 <p className="text-lg text-gray-700 dark:text-gray-300">
                   {game.summary}
                 </p>
               )}
             </header>
+
+            <SectionDivider label="Information" />
 
             <GameDetails
               platforms={game.platforms}
@@ -198,8 +201,10 @@ export default async function GamePage({
               franchises={game.franchises}
             />
 
+            <SectionDivider label="Videos" />
+
             {game.videos && game.videos.length > 0 ? (
-              <div className="space-y-8 mb-8">
+              <div className="space-y-8">
                 {game.videos && game.videos.length > 0 && (
                   <div>
                     <h2 className="text-xl font-semibold mb-4">Videos</h2>
@@ -209,7 +214,11 @@ export default async function GamePage({
               </div>
             ) : null}
 
+            <SectionDivider label="Series" />
+
             <FranchiseGames gameId={game.id} />
+
+            <SectionDivider label="Similar Games" />
 
             <SimilarGames gameId={game.id} />
           </main>
