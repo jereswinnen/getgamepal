@@ -162,7 +162,7 @@ export default async function GamePage({
             />
           </aside>
 
-          <main className="md:col-start-2 md:col-end-6 flex flex-col gap-9">
+          <main className="md:col-start-2 md:col-end-7 flex flex-col gap-9">
             {game.screenshots && game.screenshots.length > 0 ? (
               <GameScreenshots
                 screenshots={game.screenshots}
