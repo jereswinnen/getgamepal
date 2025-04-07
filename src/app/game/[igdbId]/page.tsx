@@ -190,37 +190,34 @@ export default async function GamePage({
               platforms={game.platforms}
               developers={getDevelopers(game)}
               publishers={getPublishers(game)}
-              releaseDate={game.first_release_date}
               genres={game.genres}
               gameModes={game.game_modes}
               igdbId={game.id}
               url={game.url}
               totalRating={game.total_rating}
               ratingCount={game.rating_count}
-              franchise={game.franchise}
-              franchises={game.franchises}
             />
 
-            <SectionDivider label="Videos" />
-
             {game.videos && game.videos.length > 0 ? (
-              <div className="space-y-8">
-                {game.videos && game.videos.length > 0 && (
-                  <div>
-                    <h2 className="text-xl font-semibold mb-4">Videos</h2>
-                    <GameVideos videos={game.videos} />
-                  </div>
-                )}
-              </div>
+              <>
+                <SectionDivider label="Videos" />
+                <GameVideos videos={game.videos} />
+              </>
             ) : null}
 
-            <SectionDivider label="Series" />
+            {game.franchise && game.franchises && game.franchises.length > 0 ? (
+              <>
+                <SectionDivider label="Series" />
+                <FranchiseGames gameId={game.id} />
+              </>
+            ) : null}
 
-            <FranchiseGames gameId={game.id} />
-
-            <SectionDivider label="Similar Games" />
-
-            <SimilarGames gameId={game.id} />
+            {game.similar_games && game.similar_games.length > 0 ? (
+              <>
+                <SectionDivider label="Similar Games" />
+                <SimilarGames gameId={game.id} />
+              </>
+            ) : null}
           </main>
         </div>
       ) : (

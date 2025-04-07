@@ -116,51 +116,45 @@ export default function SimilarGames({
   }
 
   return (
-    <div className="mt-12">
-      <h2 className="text-xl font-semibold mb-6">Similar Games</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {similarGames.map((game) => (
-          <Link key={game.id} href={`/game/${game.id}`} className="group">
-            <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
-              <GameCover
-                coverUrl={game.cover?.url}
-                gameName={game.name}
-                aspectRatio="3/4"
-                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-                className="w-full"
-              />
-              <div className="p-3">
-                <h3 className="font-medium text-sm truncate">{game.name}</h3>
-                <div className="text-xs opacity-70 mt-1">
-                  {formatDate(game.first_release_date)}
-                </div>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      {similarGames.map((game) => (
+        <Link key={game.id} href={`/game/${game.id}`} className="group">
+          <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
+            <GameCover
+              coverUrl={game.cover?.url}
+              gameName={game.name}
+              aspectRatio="3/4"
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+              className="w-full"
+            />
+            <div className="p-3">
+              <h3 className="font-medium text-sm truncate">{game.name}</h3>
+              <div className="text-xs opacity-70 mt-1">
+                {formatDate(game.first_release_date)}
               </div>
             </div>
-          </Link>
-        ))}
-      </div>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
 
 function SimilarGamesSkeleton() {
   return (
-    <div className="mt-12">
-      <h2 className="text-xl font-semibold mb-6">Similar Games</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden h-full animate-pulse"
-          >
-            <div className="relative aspect-[3/4] bg-gray-200 dark:bg-gray-700"></div>
-            <div className="p-3">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/5 mb-2"></div>
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-            </div>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden h-full animate-pulse"
+        >
+          <div className="relative aspect-[3/4] bg-gray-200 dark:bg-gray-700"></div>
+          <div className="p-3">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/5 mb-2"></div>
+            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
