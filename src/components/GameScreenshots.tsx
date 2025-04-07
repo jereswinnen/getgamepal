@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface Screenshot {
   id: number;
@@ -75,18 +75,28 @@ export default function GameScreenshots({
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-video w-full overflow-hidden rounded-md">
+      <div className="relative aspect-video w-full [&>*]:rounded-md">
         {screenshots.map((screenshot, index) => (
-          <Image
-            key={screenshot.id}
-            src={formatScreenshotUrl(screenshot.url)}
-            alt={`${gameName} screenshot ${index + 1}`}
-            fill
-            className={`object-cover transition-opacity duration-800 ease-in-out ${
-              index === activeIndex ? "opacity-100" : "opacity-0"
-            }`}
-            sizes="(max-width: 768px) 100vw, 800px"
-          />
+          <React.Fragment key={screenshot.id}>
+            <Image
+              src={formatScreenshotUrl(screenshot.url)}
+              alt={`${gameName} screenshot ${index + 1}`}
+              fill
+              className={`absolute -z-10 translate-y-[2px] blur-md object-cover transition-opacity duration-800 ease-in-out ${
+                index === activeIndex ? "opacity-30" : "opacity-0"
+              }`}
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+            <Image
+              src={formatScreenshotUrl(screenshot.url)}
+              alt={`${gameName} screenshot ${index + 1}`}
+              fill
+              className={`object-cover transition-opacity duration-800 ease-in-out ${
+                index === activeIndex ? "opacity-100" : "opacity-0"
+              }`}
+              sizes="(max-width: 768px) 100vw, 800px"
+            />
+          </React.Fragment>
         ))}
 
         {screenshots.length > 1 && (
