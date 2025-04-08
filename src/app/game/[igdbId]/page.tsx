@@ -205,7 +205,7 @@ export default async function GamePage({
               </>
             ) : null}
 
-            {game.franchise && game.franchises && game.franchises.length > 0 ? (
+            {game.franchises && game.franchises.length > 0 ? (
               <>
                 <SectionDivider label="Series" />
                 <FranchiseGames gameId={game.id} />

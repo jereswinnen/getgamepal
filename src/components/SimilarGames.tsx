@@ -10,21 +10,12 @@ interface Game {
   cover?: {
     url: string;
   };
-  first_release_date?: number;
   similarityReason?: string;
 }
 
 interface SimilarGamesProps {
   gameId?: number;
   similarGames?: number[] | Game[];
-}
-
-function formatDate(timestamp?: number): string {
-  if (!timestamp) return "TBA";
-  return new Date(timestamp * 1000).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-  });
 }
 
 export default function SimilarGames({
@@ -116,24 +107,21 @@ export default function SimilarGames({
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    <div className="group grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
       {similarGames.map((game) => (
-        <Link key={game.id} href={`/game/${game.id}`} className="group">
-          <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
-            <GameCover
-              coverUrl={game.cover?.url}
-              gameName={game.name}
-              aspectRatio="3/4"
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-              className="w-full"
-            />
-            <div className="p-3">
-              <h3 className="font-medium text-sm truncate">{game.name}</h3>
-              <div className="text-xs opacity-70 mt-1">
-                {formatDate(game.first_release_date)}
-              </div>
-            </div>
-          </div>
+        <Link
+          key={game.id}
+          href={`/game/${game.id}`}
+          className="flex flex-col gap-2 transition-all duration-200 will-change-transform group-hover:opacity-70 hover:opacity-100 hover:scale-105"
+        >
+          <GameCover
+            coverUrl={game.cover?.url}
+            gameName={game.name}
+            aspectRatio="3/4"
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+            className="w-full"
+          />
+          <h3 className="font-medium text-sm truncate">{game.name}</h3>
         </Link>
       ))}
     </div>

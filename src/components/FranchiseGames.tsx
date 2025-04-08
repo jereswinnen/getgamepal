@@ -131,83 +131,48 @@ export default function FranchiseGames({ gameId }: FranchiseGamesProps) {
   }
 
   return (
-    <div className="mt-12">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">{franchiseName} Series</h2>
-        {franchiseId && (
+    <div className="group grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      {franchiseGames
+        .sort((a, b) => {
+          // If either game doesn't have a release date
+          if (!a.first_release_date) return 1; // Place games without dates at the end
+          if (!b.first_release_date) return -1;
+          // Sort newest to oldest
+          return b.first_release_date - a.first_release_date;
+        })
+        .slice(0, 6)
+        .map((game) => (
           <Link
-            href={`/franchise/${franchiseId}`}
-            className="text-sm hover:underline text-blue-600 dark:text-blue-400"
+            key={game.id}
+            href={`/game/${game.id}`}
+            className="flex flex-col gap-2 transition-all duration-200 will-change-transform group-hover:opacity-70 hover:opacity-100 hover:scale-105"
           >
-            See all
+            <GameCover
+              coverUrl={game.cover?.url}
+              gameName={game.name}
+              aspectRatio="3/4"
+              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+              className="w-full"
+            />
+            <h3 className="font-medium text-sm truncate">{game.name}</h3>
           </Link>
-        )}
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {franchiseGames
-          .sort((a, b) => {
-            // If either game doesn't have a release date
-            if (!a.first_release_date) return 1; // Place games without dates at the end
-            if (!b.first_release_date) return -1;
-            // Sort newest to oldest
-            return b.first_release_date - a.first_release_date;
-          })
-          .slice(0, 6)
-          .map((game) => (
-            <Link key={game.id} href={`/game/${game.id}`} className="group">
-              <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
-                <GameCover
-                  coverUrl={game.cover?.url}
-                  gameName={game.name}
-                  aspectRatio="3/4"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-                  className="w-full"
-                />
-                <div className="p-3">
-                  <h3 className="font-medium text-sm truncate">{game.name}</h3>
-                  <div className="flex justify-between items-center mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    <span>{formatDate(game.first_release_date)}</span>
-                    {game.total_rating && (
-                      <span
-                        className={`font-medium ${
-                          game.total_rating >= 75
-                            ? "text-green-600 dark:text-green-400"
-                            : game.total_rating >= 50
-                            ? "text-yellow-600 dark:text-yellow-400"
-                            : "text-red-600 dark:text-red-400"
-                        }`}
-                      >
-                        {Math.round(game.total_rating)}%
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-      </div>
+        ))}
     </div>
   );
 }
 
 function FranchiseGamesSkeleton() {
   return (
-    <div className="mt-12">
-      <h2 className="text-xl font-semibold mb-6">Franchise</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden h-full animate-pulse"
-          >
-            <div className="relative aspect-[3/4] bg-gray-200 dark:bg-gray-700"></div>
-            <div className="p-3">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/5 mb-2"></div>
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden h-full animate-pulse"
+        >
+          <div className="relative aspect-[3/4] bg-gray-200 dark:bg-gray-700"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/5 mb-2"></div>
+        </div>
+      ))}
     </div>
   );
 }
