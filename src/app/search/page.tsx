@@ -100,10 +100,12 @@ export default function SearchPage() {
   }, [offset]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Search Results</h1>
+    <div className="o-grid--inner">
+      <header className="col-span-full">
+        <h1 className="text-3xl font-bold">Search Results</h1>
+      </header>
 
-      <div className="space-y-2">
+      <div className="col-span-full">
         {isLoading && offset === 0 && (
           <div className="text-center py-8">
             <div
@@ -144,29 +146,25 @@ export default function SearchPage() {
               <Link
                 key={game.id}
                 href={`/game/${game.id}`}
-                className="group"
+                className="flex flex-col gap-2 transition-all duration-200 will-change-transform group-hover:opacity-70 hover:opacity-100 hover:scale-105"
                 ref={
                   index === searchResults.length - 1 ? lastGameRef : undefined
                 }
               >
-                <div className="bg-black/[.03] dark:bg-white/[.03] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full">
-                  <GameCover
-                    coverUrl={game.cover?.url}
-                    gameName={game.name}
-                    aspectRatio="3/4"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
-                    className="w-full"
-                  />
-                  <div className="p-3">
-                    <h3 className="font-medium text-sm truncate">
-                      {game.name}
-                    </h3>
-                    {game.first_release_date && (
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {new Date(game.first_release_date * 1000).getFullYear()}
-                      </div>
-                    )}
-                  </div>
+                <GameCover
+                  coverUrl={game.cover?.url}
+                  gameName={game.name}
+                  aspectRatio="3/4"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 16vw"
+                  className="w-full"
+                />
+                <div>
+                  <h3 className="font-medium text-sm truncate">{game.name}</h3>
+                  {/* {game.first_release_date && (
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {new Date(game.first_release_date * 1000).getFullYear()}
+                    </div>
+                  )} */}
                 </div>
               </Link>
             ))}
