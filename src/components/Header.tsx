@@ -93,12 +93,7 @@ export default function Header() {
                 </Link>
               </Button>
               <Button variant="default" size="sm">
-                <Link
-                  href="/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1"
-                >
+                <Link href="/dashboard" className="flex items-center gap-1">
                   <User size={16} weight="bold" />
                   My Account
                 </Link>
