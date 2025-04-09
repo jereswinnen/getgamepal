@@ -2,14 +2,36 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { AppStoreLogo, MagnifyingGlass, User } from "@phosphor-icons/react";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    // Get initial auth state
+    supabase.auth.getUser().then(({ data }) => {
+      setIsAuthenticated(!!data.user);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const navItems = [
     { label: "Home", path: "/" },
@@ -93,9 +115,12 @@ export default function Header() {
                 </Link>
               </Button>
               <Button variant="default" size="sm">
-                <Link href="/dashboard" className="flex items-center gap-1">
+                <Link
+                  href={isAuthenticated ? "/dashboard" : "/auth"}
+                  className="flex items-center gap-1"
+                >
                   <User size={16} weight="bold" />
-                  My Account
+                  {isAuthenticated ? "My Account" : "Sign In"}
                 </Link>
               </Button>
             </div>

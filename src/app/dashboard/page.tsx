@@ -51,6 +51,7 @@ export default function DashboardPage() {
     document.cookie =
       "supabase-auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; secure";
 
+    // Redirect to home page and refresh
     router.push("/");
     router.refresh();
   };
