@@ -44,60 +44,12 @@ export default function SignupPage() {
 
       console.log("Signup successful, user:", data.user?.id);
 
-      // Automatically sign in the user after successful signup
-      if (data.user) {
-        console.log("Signing in after signup...");
-        const { data: signInData, error: signInError } =
-          await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-
-        if (signInError) {
-          console.error("Auto-login error:", signInError.message);
-          setError(
-            "Account created, but couldn't log in automatically. Please go to login page."
-          );
-          setLoading(false);
-          return;
-        }
-
-        console.log(
-          "Auto-login successful, session:",
-          signInData.session ? "present" : "missing"
-        );
-
-        // Store session in a cookie manually
-        if (signInData.session) {
-          // JSON.stringify and encode session token to avoid issues
-          const token = encodeURIComponent(
-            JSON.stringify({
-              access_token: signInData.session.access_token,
-              refresh_token: signInData.session.refresh_token,
-            })
-          );
-
-          // Set cookie that mimics Supabase format
-          document.cookie = `sb-access-token=${token}; path=/; max-age=3600; SameSite=Lax; secure`;
-
-          console.log("Session cookie set, redirecting to dashboard...");
-
-          // Use a small timeout to ensure the session is properly set
-          setTimeout(() => {
-            router.push("/dashboard");
-            router.refresh();
-          }, 500);
-        } else {
-          setError("No session was created. Please try again.");
-          setLoading(false);
-        }
-      } else {
-        // Handle the case where the user needs to confirm their email first
-        setError(
-          "Please check your email to confirm your account before logging in."
-        );
-        setLoading(false);
-      }
+      // Show email verification message and don't attempt auto-login
+      setError(
+        "Account created successfully! Please check your email to verify your account. Once verified, you can log in."
+      );
+      setLoading(false);
+      return;
     } catch (err) {
       console.error("Unexpected signup error:", err);
       setError("An unexpected error occurred");

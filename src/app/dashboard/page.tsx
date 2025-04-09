@@ -26,13 +26,12 @@ export default function DashboardPage() {
 
     // Get initial session
     supabase.auth.getUser().then(({ data, error }) => {
-      if (error) {
-        setIsError(true);
+      if (error || !data?.user) {
+        // If there's an error or no user, redirect to login
+        router.push("/auth/login");
         return;
       }
-      if (data?.user) {
-        setUser(data.user);
-      }
+      setUser(data.user);
     });
 
     return () => {
