@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { Game } from "@/types/game";
 import { Loader2 } from "lucide-react";
 import { Plus, Trash } from "@phosphor-icons/react";
-import AddToLibrarySheet from "@/components/AddToLibrarySheet";
+import AddToLibraryDialog from "@/components/AddToLibraryDialog";
 import RemoveFromLibraryDialog from "@/components/RemoveFromLibraryDialog";
 
 interface GamePageContentProps {
@@ -47,8 +47,32 @@ export default function GamePageContent({
   const [game, setGame] = useState<Game | null>(initialGame);
   const [isLoading, setIsLoading] = useState(false);
   const [isInLibrary, setIsInLibrary] = useState(initialLibraryStatus);
-  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+
+  // Add client-side library status check
+  useEffect(() => {
+    const checkLibraryStatus = async () => {
+      if (!user || !game) return;
+
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("games")
+        .select()
+        .eq("user_id", user.id)
+        .eq("igdb_id", game.id)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        // PGRST116 is "not found" error
+        console.error("Error checking library status:", error);
+      } else {
+        setIsInLibrary(!!data);
+      }
+    };
+
+    checkLibraryStatus();
+  }, [user, game]);
 
   const handleAddToLibrary = async (data: {
     platform: string;
@@ -92,7 +116,7 @@ export default function GamePageContent({
       toast.error("Failed to add game to library");
     } finally {
       setIsLoading(false);
-      setIsAddSheetOpen(false);
+      setIsAddDialogOpen(false);
     }
   };
 
@@ -143,7 +167,7 @@ export default function GamePageContent({
                 }
                 isInLibrary
                   ? setIsRemoveDialogOpen(true)
-                  : setIsAddSheetOpen(true);
+                  : setIsAddDialogOpen(true);
               }}
               disabled={isLoading}
               variant={isInLibrary ? "destructive" : "default"}
@@ -236,10 +260,10 @@ export default function GamePageContent({
 
       {game && (
         <>
-          <AddToLibrarySheet
+          <AddToLibraryDialog
             game={game}
-            isOpen={isAddSheetOpen}
-            onOpenChange={setIsAddSheetOpen}
+            isOpen={isAddDialogOpen}
+            onOpenChange={setIsAddDialogOpen}
             onConfirm={handleAddToLibrary}
           />
           <RemoveFromLibraryDialog

@@ -18,7 +18,7 @@ export default function DashboardPage() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") {
-        router.push("/auth/login");
+        router.push("/auth");
       } else if (session) {
         setUser(session.user);
       }
@@ -28,7 +28,7 @@ export default function DashboardPage() {
     supabase.auth.getUser().then(({ data, error }) => {
       if (error || !data?.user) {
         // If there's an error or no user, redirect to login
-        router.push("/auth/login");
+        router.push("/auth");
         return;
       }
       setUser(data.user);
@@ -63,7 +63,7 @@ export default function DashboardPage() {
         <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-800">
           <h2 className="text-xl font-semibold mb-2">Session Error</h2>
           <p>Unable to load your profile. Please try signing in again.</p>
-          <Button onClick={() => router.push("/auth/login")} className="mt-4">
+          <Button onClick={() => router.push("/auth")} className="mt-4">
             Go to Login
           </Button>
         </div>

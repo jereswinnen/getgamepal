@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { GAME_STATUS_OPTIONS, OWNERSHIP_TYPE_OPTIONS } from "@/lib/constants";
 import { Game } from "@/types/game";
 
-interface AddToLibrarySheetProps {
+interface AddToLibraryDialogProps {
   game: Game;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
@@ -29,12 +29,12 @@ interface AddToLibrarySheetProps {
   }) => void;
 }
 
-export default function AddToLibrarySheet({
+export default function AddToLibraryDialog({
   game,
   isOpen,
   onOpenChange,
   onConfirm,
-}: AddToLibrarySheetProps) {
+}: AddToLibraryDialogProps) {
   const [selectedPlatform, setSelectedPlatform] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("Not Started");
   const [selectedOwnership, setSelectedOwnership] =
@@ -49,14 +49,14 @@ export default function AddToLibrarySheet({
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Add Game</SheetTitle>
-          <SheetDescription>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add Game</DialogTitle>
+          <DialogDescription>
             Configure how you want to add {game.name} to your library
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
@@ -120,12 +120,15 @@ export default function AddToLibrarySheet({
           </div>
         </div>
 
-        <SheetFooter>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
           <Button onClick={handleConfirm} disabled={!selectedPlatform}>
             Add Game
           </Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

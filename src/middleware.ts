@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
     // If no auth cookie is found, redirect to login
     if (!hasAuth) {
-      const redirectUrl = new URL("/auth/login", request.url);
+      const redirectUrl = new URL("/auth", request.url);
       // Add the original URL as a query parameter for post-login redirect
       redirectUrl.searchParams.set("redirect", request.nextUrl.pathname);
       return NextResponse.redirect(redirectUrl);
