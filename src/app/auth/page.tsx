@@ -59,6 +59,9 @@ export default function AuthPage() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/confirm`,
+        },
       });
 
       if (error) {
@@ -67,8 +70,14 @@ export default function AuthPage() {
         return;
       }
 
-      // Redirect to confirmation page
-      router.push("/auth/confirm");
+      if (data.user && !data.session) {
+        // User needs to confirm their email
+        router.push(`/auth/confirm?email=${encodeURIComponent(email)}`);
+      } else if (data.session) {
+        // User was automatically signed in (if email confirmation is disabled)
+        router.push("/dashboard");
+        router.refresh();
+      }
     } catch (err) {
       setError("An unexpected error occurred");
       setLoading(false);

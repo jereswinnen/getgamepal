@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/providers/AuthProvider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -28,9 +30,12 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} o-wrapper font-sans antialiased min-h-screen`}
       >
-        <Header />
-        <main className="o-grid py-12">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main className="o-grid py-12">{children}</main>
+          <Footer />
+          <Toaster />
+        </AuthProvider>
       </body>
     </html>
   );

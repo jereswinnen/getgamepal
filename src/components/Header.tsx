@@ -2,36 +2,17 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState, FormEvent, ChangeEvent, useEffect } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { AppStoreLogo, MagnifyingGlass, User } from "@phosphor-icons/react";
+import { useAuth } from "@/providers/AuthProvider";
 import { createClient } from "@/utils/supabase/client";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const supabase = createClient();
-
-    // Get initial auth state
-    supabase.auth.getUser().then(({ data }) => {
-      setIsAuthenticated(!!data.user);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+  const { user, loading } = useAuth();
 
   const navItems = [
     { label: "Home", path: "/" },
@@ -49,6 +30,23 @@ export default function Header() {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+  };
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+
+    // Clear cookies manually to ensure complete sign-out
+    document.cookie =
+      "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; secure";
+    document.cookie =
+      "sb-refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; secure";
+    document.cookie =
+      "supabase-auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; secure";
+
+    // Redirect to home page and refresh
+    router.push("/");
+    router.refresh();
   };
 
   const isActive = (path: string) => {
@@ -96,7 +94,7 @@ export default function Header() {
                   type="search"
                   value={searchTerm}
                   onChange={handleInputChange}
-                  className="h-9 w-full rounded-full bg-black/5 px-8 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-search-cancel-button]:hidden"
+                  className="h-9 w-full rounded-full bg-black/5 px-8 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-search-cancel-button]:hidden dark:bg-white/5"
                   placeholder="Search games..."
                 />
               </div>
@@ -114,15 +112,17 @@ export default function Header() {
                   Get the app
                 </Link>
               </Button>
-              <Button variant="default" size="sm">
-                <Link
-                  href={isAuthenticated ? "/dashboard" : "/auth"}
-                  className="flex items-center gap-1"
-                >
-                  <User size={16} weight="bold" />
-                  {isAuthenticated ? "My account" : "Sign in"}
-                </Link>
-              </Button>
+              {!loading && (
+                <Button variant="default" size="sm" asChild>
+                  <Link
+                    href={user ? "/dashboard" : "/auth"}
+                    className="flex items-center gap-1"
+                  >
+                    <User size={16} weight="bold" />
+                    My account
+                  </Link>
+                </Button>
+              )}
             </div>
           </div>
         </div>
