@@ -111,7 +111,7 @@ export default function Header() {
                   className="flex items-center gap-1"
                 >
                   <AppStoreLogo size={16} weight="bold" />
-                  Download for iOS
+                  Get the app
                 </Link>
               </Button>
               <Button variant="default" size="sm">
@@ -120,7 +120,7 @@ export default function Header() {
                   className="flex items-center gap-1"
                 >
                   <User size={16} weight="bold" />
-                  {isAuthenticated ? "My Account" : "Sign In"}
+                  {isAuthenticated ? "My account" : "Sign in"}
                 </Link>
               </Button>
             </div>
