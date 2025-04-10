@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import GamePageContent from "@/components/GamePageContent";
 import { Game } from "@/types/game";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 
 // Generate metadata for the page dynamically
 export async function generateMetadata({
@@ -16,6 +18,38 @@ export async function generateMetadata({
     title: game?.name || "Game Not Found",
     description: game?.summary || "View game details on GamePal",
   };
+}
+
+// Function to check if the game is in the user's library
+async function checkLibraryStatus(igdbId: string): Promise<boolean> {
+  try {
+    const cookieStore = cookies();
+    const supabase = createClient();
+
+    // Get the current user
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return false;
+
+    // Check if the game is in the user's library
+    const { data, error } = await supabase
+      .from("games")
+      .select()
+      .eq("user_id", user.id)
+      .eq("igdb_id", parseInt(igdbId))
+      .single();
+
+    if (error) {
+      console.error("Error checking library status:", error);
+      return false;
+    }
+
+    return !!data;
+  } catch (error) {
+    console.error("Error checking library status:", error);
+    return false;
+  }
 }
 
 // Function to get the game data from IGDB
@@ -53,7 +87,16 @@ export default async function GamePage({
 }: {
   params: { igdbId: string };
 }) {
-  const game = await getGameData(params.igdbId);
+  const [game, isInLibrary] = await Promise.all([
+    getGameData(params.igdbId),
+    checkLibraryStatus(params.igdbId),
+  ]);
 
-  return <GamePageContent initialGame={game} igdbId={params.igdbId} />;
+  return (
+    <GamePageContent
+      initialGame={game}
+      igdbId={params.igdbId}
+      initialLibraryStatus={isInLibrary}
+    />
+  );
 }

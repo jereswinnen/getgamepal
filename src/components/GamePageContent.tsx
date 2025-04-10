@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,15 @@ import { useAuth } from "@/providers/AuthProvider";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import { Game } from "@/types/game";
+import { Loader2 } from "lucide-react";
+import { Plus, Trash } from "@phosphor-icons/react";
+import AddToLibrarySheet from "@/components/AddToLibrarySheet";
+import RemoveFromLibraryDialog from "@/components/RemoveFromLibraryDialog";
 
 interface GamePageContentProps {
   initialGame: Game | null;
   igdbId: string;
+  initialLibraryStatus: boolean;
 }
 
 interface Company {
@@ -35,18 +40,21 @@ interface Company {
 export default function GamePageContent({
   initialGame,
   igdbId,
+  initialLibraryStatus,
 }: GamePageContentProps) {
   const router = useRouter();
   const { user } = useAuth();
   const [game, setGame] = useState<Game | null>(initialGame);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInLibrary, setIsInLibrary] = useState(initialLibraryStatus);
+  const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
 
-  const handleAddToLibrary = async () => {
-    if (!user) {
-      router.push("/auth/login");
-      return;
-    }
-
+  const handleAddToLibrary = async (data: {
+    platform: string;
+    status: string;
+    ownershipType: string;
+  }) => {
     if (!game) return;
 
     setIsLoading(true);
@@ -54,14 +62,12 @@ export default function GamePageContent({
 
     try {
       const { error } = await supabase.from("games").insert({
-        user_id: user.id,
+        user_id: user!.id,
         igdb_id: game.id,
         title: game.name,
-        platforms: game.platforms
-          ?.map((p: { name: string }) => p.name)
-          .join(", "),
-        status: "Not Started",
-        ownership_type: "Not Owned",
+        platforms: data.platform,
+        status: data.status,
+        ownership_type: data.ownershipType,
         genres: game.genres?.map((g: { name: string }) => g.name),
         igdb_cover_id: game.cover?.id.toString(),
         first_release_date: game.first_release_date
@@ -79,12 +85,43 @@ export default function GamePageContent({
         }
       } else {
         toast.success("Game added to your library");
+        setIsInLibrary(true);
       }
     } catch (error) {
       console.error("Error adding game to library:", error);
       toast.error("Failed to add game to library");
     } finally {
       setIsLoading(false);
+      setIsAddSheetOpen(false);
+    }
+  };
+
+  const handleRemoveFromLibrary = async () => {
+    if (!user || !game) return;
+
+    setIsLoading(true);
+    const supabase = createClient();
+
+    try {
+      const { error } = await supabase
+        .from("games")
+        .delete()
+        .eq("user_id", user.id)
+        .eq("igdb_id", game.id);
+
+      if (error) {
+        toast.error("Failed to remove game from library");
+        console.error("Error removing game from library:", error);
+      } else {
+        toast.success("Game removed from your library");
+        setIsInLibrary(false);
+      }
+    } catch (error) {
+      console.error("Error removing game from library:", error);
+      toast.error("Failed to remove game from library");
+    } finally {
+      setIsLoading(false);
+      setIsRemoveDialogOpen(false);
     }
   };
 
@@ -92,21 +129,42 @@ export default function GamePageContent({
     <>
       {game ? (
         <div className="o-grid--inner">
-          <aside>
-            <div className="flex flex-col gap-4">
-              <GameCover
-                coverUrl={game.cover?.url}
-                gameName={game.name}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              <Button
-                onClick={handleAddToLibrary}
-                disabled={isLoading}
-                className="w-full"
-              >
-                {isLoading ? "Adding..." : "Add to Library"}
-              </Button>
-            </div>
+          <aside className="md:col-span-1 flex flex-col gap-4">
+            <GameCover
+              coverUrl={game.cover?.url}
+              gameName={game.name}
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+            <Button
+              onClick={() => {
+                if (!user) {
+                  router.push("/auth");
+                  return;
+                }
+                isInLibrary
+                  ? setIsRemoveDialogOpen(true)
+                  : setIsAddSheetOpen(true);
+              }}
+              disabled={isLoading}
+              variant={isInLibrary ? "destructive" : "default"}
+              className="w-full cursor-pointer"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  {isInLibrary ? "Removing..." : "Adding..."}
+                </>
+              ) : (
+                <>
+                  {isInLibrary ? (
+                    <Trash size={14} weight="bold" />
+                  ) : (
+                    <Plus size={14} weight="bold" />
+                  )}
+                  {isInLibrary ? "Remove Game" : "Add Game"}
+                </>
+              )}
+            </Button>
           </aside>
 
           <main className="md:col-start-2 md:col-end-7 flex flex-col gap-9">
@@ -174,6 +232,23 @@ export default function GamePageContent({
             <Link href="/games">Back to Games</Link>
           </Button>
         </div>
+      )}
+
+      {game && (
+        <>
+          <AddToLibrarySheet
+            game={game}
+            isOpen={isAddSheetOpen}
+            onOpenChange={setIsAddSheetOpen}
+            onConfirm={handleAddToLibrary}
+          />
+          <RemoveFromLibraryDialog
+            gameName={game.name}
+            isOpen={isRemoveDialogOpen}
+            onOpenChange={setIsRemoveDialogOpen}
+            onConfirm={handleRemoveFromLibrary}
+          />
+        </>
       )}
     </>
   );
