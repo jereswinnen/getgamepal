@@ -5,12 +5,12 @@ import { queryIGDB } from "@/lib/igdb/client";
 // Main handler for the API route
 export async function GET(
   request: NextRequest,
-  { params }: { params: { gameId: string } }
+  context: { params: Promise<{ gameId: string }> }
 ) {
   try {
     // Await params before using gameId
-    const resolvedParams = await params;
-    const gameId = resolvedParams.gameId;
+    const params = await context.params;
+    const gameId = params.gameId;
 
     // Handle the case where gameId is not provided
     if (!gameId) {

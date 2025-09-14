@@ -4,10 +4,10 @@ import type { ProviderId } from "@/lib/monthly/types";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { year: string; month: string } }
+  context: { params: Promise<{ year: string; month: string }> }
 ) {
   try {
-    const resolved = await params;
+    const resolved = await context.params;
     const year = parseInt(resolved.year, 10);
     const month = parseInt(resolved.month, 10);
 
