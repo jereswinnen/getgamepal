@@ -7,6 +7,9 @@ import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "@phosphor-icons/react";
 
+// Force this page to be dynamically rendered
+export const dynamic = 'force-dynamic';
+
 function ConfirmContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

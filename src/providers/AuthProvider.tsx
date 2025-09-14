@@ -19,29 +19,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const supabase = createClient();
+    // Only run on client side
+    if (typeof window === 'undefined') return;
 
-    // Get initial session
-    supabase.auth.getUser().then(({ data: { user }, error }) => {
-      // Only log actual errors, not the expected "Auth session missing" case
-      if (error && error.message !== "Auth session missing!") {
-        console.error("Error fetching user:", error.message);
-      }
-      setUser(user);
+    try {
+      const supabase = createClient();
+
+      // Get initial session
+      supabase.auth.getUser().then(({ data: { user }, error }) => {
+        // Only log actual errors, not the expected "Auth session missing" case
+        if (error && error.message !== "Auth session missing!") {
+          console.error("Error fetching user:", error.message);
+        }
+        setUser(user);
+        setLoading(false);
+      });
+
+      // Listen for auth state changes
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Supabase client error:', error);
+      setUser(null);
       setLoading(false);
-    });
-
-    // Listen for auth state changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    }
   }, []);
 
   return (
