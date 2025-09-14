@@ -36,6 +36,7 @@ export async function GET(
       ...sectionData,
     });
   } catch (error: any) {
+    const params = await context.params;
     console.error(
       `Error in discovery section/${params.section} endpoint:`,
       error

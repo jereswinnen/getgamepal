@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import GameCover from "@/components/GameCover";
@@ -19,7 +19,7 @@ interface Game {
   first_release_date?: number;
 }
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const [searchResults, setSearchResults] = useState<Game[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -191,5 +191,13 @@ export default function SearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8">Loading search...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }

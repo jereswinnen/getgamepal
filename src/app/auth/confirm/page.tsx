@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/providers/AuthProvider";
 import { createClient } from "@/utils/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "@phosphor-icons/react";
 
-export default function ConfirmPage() {
+function ConfirmContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading } = useAuth();
@@ -99,5 +99,13 @@ export default function ConfirmPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function ConfirmPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center"><div className="text-center">Loading...</div></div>}>
+      <ConfirmContent />
+    </Suspense>
   );
 }
