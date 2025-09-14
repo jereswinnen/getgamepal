@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${dmSans.variable} o-wrapper font-sans antialiased min-h-screen`}
       >
         <AuthProvider>
-          <Header />
+          {/* <Header /> */}
           <main className="o-grid py-12">{children}</main>
           <Footer />
           <Toaster />
