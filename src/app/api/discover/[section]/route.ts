@@ -3,9 +3,10 @@ import { getSectionGames } from "@/lib/igdb/discover";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { section: string } }
+  context: { params: Promise<{ section: string }> }
 ) {
   try {
+    const params = await context.params;
     const sectionId = params.section;
 
     if (!sectionId) {
