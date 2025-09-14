@@ -8,10 +8,11 @@ import { cookies } from "next/headers";
 export async function generateMetadata({
   params,
 }: {
-  params: { igdbId: string };
+  params: Promise<{ igdbId: string }>;
 }): Promise<Metadata> {
+  const resolvedParams = await params;
   // Fetch game data
-  const game = await getGameData(params.igdbId);
+  const game = await getGameData(resolvedParams.igdbId);
 
   // Return title and description
   return {
@@ -85,17 +86,18 @@ async function getGameData(igdbId: string): Promise<Game | null> {
 export default async function GamePage({
   params,
 }: {
-  params: { igdbId: string };
+  params: Promise<{ igdbId: string }>;
 }) {
+  const resolvedParams = await params;
   const [game, isInLibrary] = await Promise.all([
-    getGameData(params.igdbId),
-    checkLibraryStatus(params.igdbId),
+    getGameData(resolvedParams.igdbId),
+    checkLibraryStatus(resolvedParams.igdbId),
   ]);
 
   return (
     <GamePageContent
       initialGame={game}
-      igdbId={params.igdbId}
+      igdbId={resolvedParams.igdbId}
       initialLibraryStatus={isInLibrary}
     />
   );

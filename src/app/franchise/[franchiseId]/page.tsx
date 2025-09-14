@@ -75,10 +75,11 @@ async function getFranchiseData(
 export async function generateMetadata({
   params,
 }: {
-  params: { franchiseId: string };
+  params: Promise<{ franchiseId: string }>;
 }): Promise<Metadata> {
+  const resolvedParams = await params;
   // Fetch franchise data
-  const franchiseData = await getFranchiseData(params.franchiseId);
+  const franchiseData = await getFranchiseData(resolvedParams.franchiseId);
 
   // Return title and description
   return {
@@ -94,7 +95,7 @@ export async function generateMetadata({
 export default async function FranchisePage({
   params,
 }: {
-  params: { franchiseId: string };
+  params: Promise<{ franchiseId: string }>;
 }) {
   const resolvedParams = await params;
   const franchiseId = resolvedParams.franchiseId;
