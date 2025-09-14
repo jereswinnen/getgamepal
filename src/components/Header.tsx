@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, FormEvent, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { AppStoreLogo, MagnifyingGlass, User } from "@phosphor-icons/react";
+import { IconBrandApple, IconSearch, IconUser } from "@tabler/icons-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { createClient } from "@/utils/supabase/client";
 
@@ -15,9 +15,9 @@ export default function Header() {
   const { user, loading } = useAuth();
 
   const navItems = [
-    { label: "Home", path: "/" },
-    { label: "Discover", path: "/discover" },
-    { label: "About", path: "/about" },
+    { label: "Features", path: "/#features" },
+    { label: "Platinum", path: "/#platinum" },
+    { label: "Support", path: "/#support" },
   ];
 
   const handleSearch = (e: FormEvent) => {
@@ -56,72 +56,73 @@ export default function Header() {
   };
 
   return (
-    <header className="o-wrapper py-6">
-      <div className="grid grid-cols-2 gap-8">
-        <div className="flex items-center gap-8">
-          <Link href="/">
-            <span className="text-xl font-semibold">GamePal</span>
-          </Link>
+    <header className="sticky top-0 z-50 backdrop-blur-md border-b shadow-sm">
+      <div className="o-wrapper py-6">
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex items-center gap-8">
+            <Link href="/">
+              <span className="text-xl font-semibold">GamePal</span>
+            </Link>
 
-          <nav>
-            <ul className="flex items-center gap-5 [&>li>a]:opacity-60 [&>li>a]:hover:opacity-100 [&>li>a]:transition-opacity">
-              {navItems.map((item) => (
-                <li key={item.path}>
-                  <Link
-                    href={item.path}
-                    className={
-                      isActive(item.path) ? "!opacity-100 font-semibold" : ""
-                    }
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+            <nav>
+              <ul className="flex items-center gap-5 [&>li>a]:opacity-60 [&>li>a]:hover:opacity-100 [&>li>a]:transition-opacity">
+                {navItems.map((item) => (
+                  <li key={item.path}>
+                    <Link
+                      href={item.path}
+                      className={
+                        isActive(item.path) ? "!opacity-100 font-semibold" : ""
+                      }
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
-        <div className="flex items-center justify-end gap-4">
-          <form onSubmit={handleSearch} className="w-full">
-            <div className="relative">
-              <MagnifyingGlass
-                className="absolute left-2 top-2.5 text-muted-foreground"
-                size={16}
-                weight="bold"
-              />
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={handleInputChange}
-                className="h-9 w-full rounded-full bg-black/5 px-8 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-search-cancel-button]:hidden dark:bg-white/5"
-                placeholder="Search games..."
-              />
-            </div>
-          </form>
+          <div className="flex items-center justify-end gap-4">
+            <form onSubmit={handleSearch} className="w-full">
+              <div className="relative">
+                <IconSearch
+                  className="absolute left-2 top-2.5 text-muted-foreground"
+                  size={16}
+                />
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={handleInputChange}
+                  className="h-9 w-full rounded-full bg-black/5 px-8 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-webkit-search-cancel-button]:hidden dark:bg-white/5"
+                  placeholder="Search games..."
+                />
+              </div>
+            </form>
 
-          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm">
-              <Link
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1"
-              >
-                <AppStoreLogo size={16} weight="bold" />
-                Get the app
-              </Link>
-            </Button>
-            {!loading && (
-              <Button variant="default" size="sm" asChild>
+            <div className="flex items-center gap-3">
+              <Button size="sm">
                 <Link
-                  href={user ? "/dashboard" : "/auth"}
+                  href="https://apps.apple.com/app/gamepal"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-1"
                 >
-                  <User size={16} weight="bold" />
-                  My account
+                  <IconBrandApple size={16} />
+                  Download the App
                 </Link>
               </Button>
-            )}
+              {!loading && (
+                <Button variant="default" size="sm" asChild>
+                  <Link
+                    href={user ? "/dashboard" : "/auth"}
+                    className="flex items-center gap-1"
+                  >
+                    <IconUser size={16} />
+                    My account
+                  </Link>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
