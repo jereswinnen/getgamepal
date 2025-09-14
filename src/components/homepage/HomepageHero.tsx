@@ -11,7 +11,7 @@ export default function HomepageHero() {
         alt="GamePal"
         width={1500}
         height={1125}
-        className="max-w-8xl"
+        className="max-w-10xl"
         quality={90}
         priority
       />
