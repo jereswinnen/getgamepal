@@ -35,7 +35,7 @@ async function getAccessToken() {
 
 export async function POST(
   request: NextRequest,
-  context: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> }
 ) {
   try {
     // Await the entire params object
@@ -93,7 +93,7 @@ export async function POST(
 // Health check endpoint
 export async function GET(
   request: NextRequest,
-  context: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> }
 ) {
   try {
     // Await the entire params object
