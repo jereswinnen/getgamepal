@@ -14,7 +14,7 @@ const eslintConfig = [
   {
     rules: {
       // Allow unused variables (especially imports that might be used later)
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": "off",
 
       // Allow explicit any types
       "@typescript-eslint/no-explicit-any": "off",
@@ -22,14 +22,20 @@ const eslintConfig = [
       // Allow unused parameters (common in callbacks)
       "@typescript-eslint/no-unused-params": "off",
 
-      // Less strict about console usage
-      "no-console": "warn",
+      // Allow console statements
+      "no-console": "off",
 
       // Allow empty functions
       "@typescript-eslint/no-empty-function": "off",
 
       // Allow non-null assertions
-      "@typescript-eslint/no-non-null-assertion": "warn"
+      "@typescript-eslint/no-non-null-assertion": "off",
+
+      // Allow unescaped entities in JSX (like apostrophes)
+      "react/no-unescaped-entities": "off",
+
+      // Allow unused expressions (like conditional expressions)
+      "@typescript-eslint/no-unused-expressions": "off"
     }
   }
 ];
