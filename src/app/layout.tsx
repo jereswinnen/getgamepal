@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           {/* <Header /> */}
-          <main className="o-grid py-12">{children}</main>
+          <main className="o-grid y-12">{children}</main>
           <Footer />
           <Toaster />
         </AuthProvider>
