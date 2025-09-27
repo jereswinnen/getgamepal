@@ -1,4 +1,49 @@
 {
+  "2025-10": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 185246,
+          "startDate": "2025-10-02",
+          "endDate": "2025-10-30"
+        },
+        {
+          "igdbId": 204627,
+          "startDate": "2025-10-02",
+          "endDate": "2025-10-30"
+        },
+        { "igdbId": 204360, "startDate": "2025-10-02", "endDate": "2025-10-30" }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [{ "igdbId": 305180, "startDate": "2025-10-02" }]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        { "igdbId": 250617, "startDate": "2025-10-02", "endDate": "2025-10-09" }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 121235,
+          "startDate": "2025-09-27",
+          "endDate": "2025-10-02"
+        },
+        {
+          "igdbId": 297303,
+          "startDate": "2025-09-27",
+          "endDate": "2025-10-02"
+        },
+        { "igdbId": 185249, "startDate": "2025-10-02", "endDate": "2025-10-09" }
+      ]
+    }
+  ],
   "2025-09": [
     {
       "provider": "playstation-plus",
