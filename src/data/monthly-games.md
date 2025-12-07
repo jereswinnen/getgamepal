@@ -35,6 +35,9 @@ After editing, refresh the API cache so changes are picked up immediately:
 curl -X POST http://localhost:3000/api/monthly-games/refresh | jq
 ```
 
+Live version
+curl -L -X POST http://gamepalapp.com/api/monthly-games/refresh
+
 To refresh a specific month only:
 
 ```bash
