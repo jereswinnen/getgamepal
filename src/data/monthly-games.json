@@ -1,4 +1,42 @@
 {
+  "2026-02": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 14758,
+          "startDate": "2026-02-03",
+          "endDate": "2026-03-02"
+        },
+        {
+          "igdbId": 250626,
+          "startDate": "2026-02-03",
+          "endDate": "2026-03-02"
+        },
+        {
+          "igdbId": 250626,
+          "startDate": "2026-02-03",
+          "endDate": "2026-03-02"
+        },
+        {
+          "igdbId": 146957,
+          "startDate": "2026-02-03",
+          "endDate": "2026-03-02"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        { "igdbId": 166824, "startDate": "2026-02-02" },
+        { "igdbId": 145817, "startDate": "2026-02-03" },
+        { "igdbId": 262664, "startDate": "2026-02-05" },
+        { "igdbId": 348166, "startDate": "2026-02-13" },
+        { "igdbId": 328347, "startDate": "2026-02-19" }
+      ]
+    }
+  ],
   "2025-12": [
     {
       "provider": "playstation-plus",
