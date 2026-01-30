@@ -126,12 +126,11 @@
     {
       "provider": "epic-games-store",
       "games": [
-        { "igdbId": 250617, "startDate": "2025-10-02", "endDate": "2025-10-09" }
-      ]
-    },
-    {
-      "provider": "epic-games-store",
-      "games": [
+        {
+          "igdbId": 250617,
+          "startDate": "2025-10-02",
+          "endDate": "2025-10-09"
+        },
         {
           "igdbId": 121235,
           "startDate": "2025-09-27",
