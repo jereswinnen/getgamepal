@@ -1,5 +1,5 @@
 {
-  "2026-01": [
+  "2026-02": [
     {
       "provider": "playstation-plus",
       "tier": "essential",
@@ -10,7 +10,7 @@
           "endDate": "2026-03-02"
         },
         {
-          "igdbId": 250626,
+          "igdbId": 107315,
           "startDate": "2026-02-03",
           "endDate": "2026-03-02"
         },
@@ -29,11 +29,138 @@
     {
       "provider": "xbox-game-pass",
       "games": [
-        { "igdbId": 166824, "startDate": "2026-02-02" },
-        { "igdbId": 145817, "startDate": "2026-02-03" },
-        { "igdbId": 262664, "startDate": "2026-02-05" },
-        { "igdbId": 348166, "startDate": "2026-02-13" },
-        { "igdbId": 328347, "startDate": "2026-02-19" }
+        {
+          "igdbId": 166824,
+          "startDate": "2026-02-02"
+        },
+        {
+          "igdbId": 145817,
+          "startDate": "2026-02-03"
+        },
+        {
+          "igdbId": 262664,
+          "startDate": "2026-02-05"
+        },
+        {
+          "igdbId": 348166,
+          "startDate": "2026-02-13"
+        },
+        {
+          "igdbId": 328347,
+          "startDate": "2026-02-19"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 143078,
+          "startDate": "2026-01-29",
+          "endDate": "2026-02-05"
+        }
+      ]
+    }
+  ],
+  "2026-01": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 219442,
+          "startDate": "2026-01-07",
+          "endDate": "2026-02-02"
+        },
+        {
+          "igdbId": 287849,
+          "startDate": "2026-01-07",
+          "endDate": "2026-02-02"
+        },
+        {
+          "igdbId": 152127,
+          "startDate": "2026-01-07",
+          "endDate": "2026-02-02"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 265392,
+          "startDate": "2026-01-06"
+        },
+        {
+          "igdbId": 350903,
+          "startDate": "2026-01-06"
+        },
+        {
+          "igdbId": 305159,
+          "startDate": "2026-01-07"
+        },
+        {
+          "igdbId": 314476,
+          "startDate": "2026-01-07"
+        },
+        {
+          "igdbId": 325588,
+          "startDate": "2026-01-07"
+        },
+        {
+          "igdbId": 344681,
+          "startDate": "2026-01-07"
+        },
+        {
+          "igdbId": 385,
+          "startDate": "2026-01-08"
+        },
+        {
+          "igdbId": 252827,
+          "startDate": "2026-01-13"
+        },
+        {
+          "igdbId": 290839,
+          "startDate": "2026-01-15"
+        },
+        {
+          "igdbId": 55163,
+          "startDate": "2026-01-20"
+        },
+        {
+          "igdbId": 306141,
+          "startDate": "2026-01-20"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 80961,
+          "startDate": "2026-01-01",
+          "endDate": "2026-01-08"
+        },
+        {
+          "igdbId": 103380,
+          "startDate": "2026-01-08",
+          "endDate": "2026-01-15"
+        },
+        {
+          "igdbId": 6072,
+          "startDate": "2026-01-15",
+          "endDate": "2026-01-22"
+        },
+        {
+          "igdbId": 13554,
+          "startDate": "2026-01-15",
+          "endDate": "2026-01-22"
+        },
+        {
+          "igdbId": 99302,
+          "startDate": "2026-01-22",
+          "endDate": "2026-01-29"
+        }
       ]
     }
   ],
@@ -72,31 +199,200 @@
     {
       "provider": "xbox-game-pass",
       "games": [
-        { "igdbId": 279642, "startDate": "2025-12-02" },
-        { "igdbId": 332273, "startDate": "2025-12-03" },
-        { "igdbId": 322702, "startDate": "2025-12-03" },
-        { "igdbId": 252828, "startDate": "2025-12-04" },
-        { "igdbId": 142415, "startDate": "2025-12-04" },
-        { "igdbId": 8948, "startDate": "2025-12-04" },
-        { "igdbId": 325554, "startDate": "2025-12-09" },
-        { "igdbId": 328347, "startDate": "2025-12-09" },
-        { "igdbId": 200611, "startDate": "2025-12-09" },
-        { "igdbId": 239392, "startDate": "2025-12-10" },
-        { "igdbId": 347308, "startDate": "2025-12-11" }
+        {
+          "igdbId": 279642,
+          "startDate": "2025-12-02"
+        },
+        {
+          "igdbId": 332273,
+          "startDate": "2025-12-03"
+        },
+        {
+          "igdbId": 322702,
+          "startDate": "2025-12-03"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-12-04"
+        },
+        {
+          "igdbId": 142415,
+          "startDate": "2025-12-04"
+        },
+        {
+          "igdbId": 8948,
+          "startDate": "2025-12-04"
+        },
+        {
+          "igdbId": 325554,
+          "startDate": "2025-12-09"
+        },
+        {
+          "igdbId": 328347,
+          "startDate": "2025-12-09"
+        },
+        {
+          "igdbId": 200611,
+          "startDate": "2025-12-09"
+        },
+        {
+          "igdbId": 272491,
+          "startDate": "2025-12-10"
+        },
+        {
+          "igdbId": 239392,
+          "startDate": "2025-12-10"
+        },
+        {
+          "igdbId": 347308,
+          "startDate": "2025-12-11"
+        }
       ]
     },
     {
       "provider": "epic-games-store",
       "games": [
         {
-          "igdbId": 35283,
-          "startDate": "2025-12-07",
-          "endDate": "2025-12-11"
+          "igdbId": 136625,
+          "startDate": "2025-12-11",
+          "endDate": "2025-12-12"
         },
         {
-          "igdbId": 28213,
-          "startDate": "2025-12-07",
-          "endDate": "2025-12-11"
+          "igdbId": 296290,
+          "startDate": "2025-12-18",
+          "endDate": "2025-12-19"
+        },
+        {
+          "igdbId": 203367,
+          "startDate": "2025-12-19",
+          "endDate": "2025-12-20"
+        },
+        {
+          "igdbId": 188555,
+          "startDate": "2025-12-20",
+          "endDate": "2025-12-21"
+        },
+        {
+          "igdbId": 127816,
+          "startDate": "2025-12-22",
+          "endDate": "2025-12-23"
+        },
+        {
+          "igdbId": 10760,
+          "startDate": "2025-12-23",
+          "endDate": "2025-12-24"
+        },
+        {
+          "igdbId": 141540,
+          "startDate": "2025-12-25",
+          "endDate": "2025-12-26"
+        },
+        {
+          "igdbId": 109535,
+          "startDate": "2025-12-26",
+          "endDate": "2025-12-27"
+        },
+        {
+          "igdbId": 125250,
+          "startDate": "2025-12-27",
+          "endDate": "2025-12-28"
+        },
+        {
+          "igdbId": 142549,
+          "startDate": "2025-12-29",
+          "endDate": "2025-12-30"
+        },
+        {
+          "igdbId": 115766,
+          "startDate": "2025-12-30",
+          "endDate": "2025-12-31"
+        },
+        {
+          "igdbId": 119342,
+          "startDate": "2025-12-31",
+          "endDate": "2026-01-01"
+        }
+      ]
+    }
+  ],
+  "2025-11": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 119914,
+          "startDate": "2025-11-04",
+          "endDate": "2025-12-01"
+        },
+        {
+          "igdbId": 279636,
+          "startDate": "2025-11-04",
+          "endDate": "2025-12-01"
+        },
+        {
+          "igdbId": 25076,
+          "startDate": "2025-11-04",
+          "endDate": "2025-12-01"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 217596,
+          "startDate": "2025-11-04"
+        },
+        {
+          "igdbId": 332273,
+          "startDate": "2025-11-05"
+        },
+        {
+          "igdbId": 279635,
+          "startDate": "2025-11-14"
+        },
+        {
+          "igdbId": 305003,
+          "startDate": "2025-11-19"
+        },
+        {
+          "igdbId": 239392,
+          "startDate": "2025-11-20"
+        },
+        {
+          "igdbId": 210624,
+          "startDate": "2025-11-25"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 28311,
+          "startDate": "2025-10-30",
+          "endDate": "2025-11-06"
+        },
+        {
+          "igdbId": 283679,
+          "startDate": "2025-10-30",
+          "endDate": "2025-11-06"
+        },
+        {
+          "igdbId": 109535,
+          "startDate": "2025-11-06",
+          "endDate": "2025-11-13"
+        },
+        {
+          "igdbId": 217596,
+          "startDate": "2025-11-13",
+          "endDate": "2025-11-20"
+        },
+        {
+          "igdbId": 347308,
+          "startDate": "2025-11-20",
+          "endDate": "2025-11-27"
         }
       ]
     }
@@ -116,21 +412,61 @@
           "startDate": "2025-10-02",
           "endDate": "2025-10-30"
         },
-        { "igdbId": 204360, "startDate": "2025-10-02", "endDate": "2025-10-30" }
+        {
+          "igdbId": 204360,
+          "startDate": "2025-10-02",
+          "endDate": "2025-10-30"
+        }
       ]
     },
     {
       "provider": "xbox-game-pass",
-      "games": [{ "igdbId": 305180, "startDate": "2025-10-02" }]
+      "games": [
+        {
+          "igdbId": 128917,
+          "startDate": "2025-10-08"
+        },
+        {
+          "igdbId": 124786,
+          "startDate": "2025-10-09"
+        },
+        {
+          "igdbId": 279635,
+          "startDate": "2025-10-14"
+        },
+        {
+          "igdbId": 295199,
+          "startDate": "2025-10-15"
+        },
+        {
+          "igdbId": 141547,
+          "startDate": "2025-10-21"
+        },
+        {
+          "igdbId": 329130,
+          "startDate": "2025-10-21"
+        },
+        {
+          "igdbId": 335439,
+          "startDate": "2025-10-23"
+        },
+        {
+          "igdbId": 210624,
+          "startDate": "2025-10-23"
+        },
+        {
+          "igdbId": 235846,
+          "startDate": "2025-10-28"
+        },
+        {
+          "igdbId": 152246,
+          "startDate": "2025-10-29"
+        }
+      ]
     },
     {
       "provider": "epic-games-store",
       "games": [
-        {
-          "igdbId": 250617,
-          "startDate": "2025-10-02",
-          "endDate": "2025-10-09"
-        },
         {
           "igdbId": 121235,
           "startDate": "2025-09-27",
@@ -141,7 +477,46 @@
           "startDate": "2025-09-27",
           "endDate": "2025-10-02"
         },
-        { "igdbId": 185249, "startDate": "2025-10-02", "endDate": "2025-10-09" }
+        {
+          "igdbId": 250617,
+          "startDate": "2025-10-09",
+          "endDate": "2025-10-16"
+        },
+        {
+          "igdbId": 185249,
+          "startDate": "2025-10-09",
+          "endDate": "2025-10-16"
+        },
+        {
+          "igdbId": 106534,
+          "startDate": "2025-10-16",
+          "endDate": "2025-10-23"
+        },
+        {
+          "igdbId": 228258,
+          "startDate": "2025-10-16",
+          "endDate": "2025-10-23"
+        },
+        {
+          "igdbId": 15537,
+          "startDate": "2025-10-23",
+          "endDate": "2025-10-30"
+        },
+        {
+          "igdbId": 199130,
+          "startDate": "2025-10-23",
+          "endDate": "2025-10-30"
+        },
+        {
+          "igdbId": 28311,
+          "startDate": "2025-10-30",
+          "endDate": "2025-11-06"
+        },
+        {
+          "igdbId": 283679,
+          "startDate": "2025-10-30",
+          "endDate": "2025-11-06"
+        }
       ]
     }
   ],
@@ -150,25 +525,83 @@
       "provider": "playstation-plus",
       "tier": "essential",
       "games": [
-        { "igdbId": 14741, "startDate": "2025-09-02", "endDate": "2025-09-30" },
-        { "igdbId": 17000, "startDate": "2025-09-02", "endDate": "2025-09-30" },
+        {
+          "igdbId": 14741,
+          "startDate": "2025-09-02",
+          "endDate": "2025-09-30"
+        },
+        {
+          "igdbId": 17000,
+          "startDate": "2025-09-02",
+          "endDate": "2025-09-30"
+        },
         {
           "igdbId": 142549,
           "startDate": "2025-09-02",
           "endDate": "2025-09-30"
         },
-        { "igdbId": 320137, "startDate": "2025-09-02", "endDate": "2025-09-17" }
+        {
+          "igdbId": 320137,
+          "startDate": "2025-09-02",
+          "endDate": "2025-09-17"
+        }
       ]
     },
     {
       "provider": "xbox-game-pass",
       "games": [
-        { "igdbId": 305180, "startDate": "2025-09-02" },
-        { "igdbId": 194821, "startDate": "2025-09-03" },
-        { "igdbId": 115289, "startDate": "2025-09-04" },
-        { "igdbId": 250162, "startDate": "2025-09-04" },
-        { "igdbId": 252175, "startDate": "2025-09-10" },
-        { "igdbId": 314239, "startDate": "2025-09-16" }
+        {
+          "igdbId": 305180,
+          "startDate": "2025-09-02"
+        },
+        {
+          "igdbId": 194821,
+          "startDate": "2025-09-03"
+        },
+        {
+          "igdbId": 115289,
+          "startDate": "2025-09-04"
+        },
+        {
+          "igdbId": 250162,
+          "startDate": "2025-09-04"
+        },
+        {
+          "igdbId": 252175,
+          "startDate": "2025-09-10"
+        },
+        {
+          "igdbId": 314239,
+          "startDate": "2025-09-16"
+        },
+        {
+          "igdbId": 260780,
+          "startDate": "2025-09-17"
+        },
+        {
+          "igdbId": 240556,
+          "startDate": "2025-09-17"
+        },
+        {
+          "igdbId": 164290,
+          "startDate": "2025-09-18"
+        },
+        {
+          "igdbId": 133344,
+          "startDate": "2025-09-18"
+        },
+        {
+          "igdbId": 113112,
+          "startDate": "2025-09-19"
+        },
+        {
+          "igdbId": 118074,
+          "startDate": "2025-09-23"
+        },
+        {
+          "igdbId": 279636,
+          "startDate": "2025-09-25"
+        }
       ]
     },
     {
@@ -179,8 +612,601 @@
           "startDate": "2025-09-11",
           "endDate": "2025-09-18"
         },
-        { "igdbId": 36749, "startDate": "2025-09-11", "endDate": "2025-09-18" },
-        { "igdbId": 57153, "startDate": "2025-09-11", "endDate": "2025-09-18" }
+        {
+          "igdbId": 36749,
+          "startDate": "2025-09-11",
+          "endDate": "2025-09-18"
+        },
+        {
+          "igdbId": 57153,
+          "startDate": "2025-09-11",
+          "endDate": "2025-09-18"
+        },
+        {
+          "igdbId": 111033,
+          "startDate": "2025-09-19",
+          "endDate": "2025-09-26"
+        }
+      ]
+    }
+  ],
+  "2025-08": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 148241,
+          "startDate": "2025-08-05",
+          "endDate": "2025-09-01"
+        },
+        {
+          "igdbId": 8948,
+          "startDate": "2025-08-05",
+          "endDate": "2025-09-01"
+        },
+        {
+          "igdbId": 110170,
+          "startDate": "2025-08-05",
+          "endDate": "2025-09-01"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 252175,
+          "startDate": "2025-08-06"
+        },
+        {
+          "igdbId": 305180,
+          "startDate": "2025-08-06"
+        },
+        {
+          "igdbId": 128917,
+          "startDate": "2025-08-07"
+        },
+        {
+          "igdbId": 119342,
+          "startDate": "2025-08-12"
+        },
+        {
+          "igdbId": 3021,
+          "startDate": "2025-08-20"
+        },
+        {
+          "igdbId": 30208,
+          "startDate": "2025-08-28"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 119342,
+          "startDate": "2025-08-07",
+          "endDate": "2025-08-14"
+        },
+        {
+          "igdbId": 36749,
+          "startDate": "2025-08-14",
+          "endDate": "2025-08-21"
+        },
+        {
+          "igdbId": 250617,
+          "startDate": "2025-08-28",
+          "endDate": "2025-09-04"
+        }
+      ]
+    }
+  ],
+  "2025-07": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 125165,
+          "startDate": "2025-07-01",
+          "endDate": "2025-08-04"
+        },
+        {
+          "igdbId": 116480,
+          "startDate": "2025-07-01",
+          "endDate": "2025-08-04"
+        },
+        {
+          "igdbId": 217601,
+          "startDate": "2025-07-01",
+          "endDate": "2025-08-04"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 7307,
+          "startDate": "2025-07-02"
+        },
+        {
+          "igdbId": 25076,
+          "startDate": "2025-07-03"
+        },
+        {
+          "igdbId": 133344,
+          "startDate": "2025-07-11"
+        },
+        {
+          "igdbId": 204618,
+          "startDate": "2025-07-15"
+        },
+        {
+          "igdbId": 127165,
+          "startDate": "2025-07-17"
+        },
+        {
+          "igdbId": 279636,
+          "startDate": "2025-07-24"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 143612,
+          "startDate": "2025-07-04",
+          "endDate": "2025-07-11"
+        },
+        {
+          "igdbId": 199130,
+          "startDate": "2025-07-18",
+          "endDate": "2025-07-25"
+        },
+        {
+          "igdbId": 148241,
+          "startDate": "2025-07-25",
+          "endDate": "2025-08-01"
+        }
+      ]
+    }
+  ],
+  "2025-06": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 279642,
+          "startDate": "2025-06-03",
+          "endDate": "2025-06-30"
+        },
+        {
+          "igdbId": 279635,
+          "startDate": "2025-06-03",
+          "endDate": "2025-06-30"
+        },
+        {
+          "igdbId": 194821,
+          "startDate": "2025-06-03",
+          "endDate": "2025-06-30"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 252827,
+          "startDate": "2025-06-05"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-06-11"
+        },
+        {
+          "igdbId": 314476,
+          "startDate": "2025-06-17"
+        },
+        {
+          "igdbId": 325588,
+          "startDate": "2025-06-19"
+        },
+        {
+          "igdbId": 3019,
+          "startDate": "2025-06-26"
+        },
+        {
+          "igdbId": 260780,
+          "startDate": "2025-06-27"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 188555,
+          "startDate": "2025-06-06",
+          "endDate": "2025-06-13"
+        },
+        {
+          "igdbId": 125250,
+          "startDate": "2025-06-13",
+          "endDate": "2025-06-20"
+        },
+        {
+          "igdbId": 127816,
+          "startDate": "2025-06-27",
+          "endDate": "2025-07-04"
+        }
+      ]
+    }
+  ],
+  "2025-05": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 252175,
+          "startDate": "2025-05-06",
+          "endDate": "2025-06-02"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-05-06",
+          "endDate": "2025-06-02"
+        },
+        {
+          "igdbId": 200611,
+          "startDate": "2025-05-06",
+          "endDate": "2025-06-02"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 7346,
+          "startDate": "2025-05-07"
+        },
+        {
+          "igdbId": 252175,
+          "startDate": "2025-05-07"
+        },
+        {
+          "igdbId": 295199,
+          "startDate": "2025-05-08"
+        },
+        {
+          "igdbId": 332273,
+          "startDate": "2025-05-15"
+        },
+        {
+          "igdbId": 322702,
+          "startDate": "2025-05-21"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-05-22"
+        },
+        {
+          "igdbId": 113112,
+          "startDate": "2025-05-29"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 203367,
+          "startDate": "2025-05-01",
+          "endDate": "2025-05-08"
+        },
+        {
+          "igdbId": 296290,
+          "startDate": "2025-05-15",
+          "endDate": "2025-05-22"
+        },
+        {
+          "igdbId": 119342,
+          "startDate": "2025-05-29",
+          "endDate": "2025-06-05"
+        }
+      ]
+    }
+  ],
+  "2025-04": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 204360,
+          "startDate": "2025-04-01",
+          "endDate": "2025-05-05"
+        },
+        {
+          "igdbId": 204627,
+          "startDate": "2025-04-01",
+          "endDate": "2025-05-05"
+        },
+        {
+          "igdbId": 36749,
+          "startDate": "2025-04-01",
+          "endDate": "2025-05-05"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 1877,
+          "startDate": "2025-04-03"
+        },
+        {
+          "igdbId": 325554,
+          "startDate": "2025-04-03"
+        },
+        {
+          "igdbId": 279642,
+          "startDate": "2025-04-08"
+        },
+        {
+          "igdbId": 125165,
+          "startDate": "2025-04-08"
+        },
+        {
+          "igdbId": 347308,
+          "startDate": "2025-04-15"
+        },
+        {
+          "igdbId": 143612,
+          "startDate": "2025-04-16"
+        },
+        {
+          "igdbId": 1030,
+          "startDate": "2025-04-22"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-04-24"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 26758,
+          "startDate": "2025-03-27",
+          "endDate": "2025-04-03"
+        },
+        {
+          "igdbId": 115766,
+          "startDate": "2025-04-10",
+          "endDate": "2025-04-17"
+        },
+        {
+          "igdbId": 10760,
+          "startDate": "2025-04-17",
+          "endDate": "2025-04-24"
+        }
+      ]
+    }
+  ],
+  "2025-03": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 30208,
+          "startDate": "2025-03-04",
+          "endDate": "2025-03-31"
+        },
+        {
+          "igdbId": 144389,
+          "startDate": "2025-03-04",
+          "endDate": "2025-03-31"
+        },
+        {
+          "igdbId": 196851,
+          "startDate": "2025-03-04",
+          "endDate": "2025-03-31"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 252828,
+          "startDate": "2025-03-18"
+        },
+        {
+          "igdbId": 141540,
+          "startDate": "2025-03-19"
+        },
+        {
+          "igdbId": 239392,
+          "startDate": "2025-03-19"
+        },
+        {
+          "igdbId": 305159,
+          "startDate": "2025-03-27"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 109535,
+          "startDate": "2025-02-27",
+          "endDate": "2025-03-06"
+        },
+        {
+          "igdbId": 141540,
+          "startDate": "2025-03-13",
+          "endDate": "2025-03-20"
+        },
+        {
+          "igdbId": 136625,
+          "startDate": "2025-03-20",
+          "endDate": "2025-03-27"
+        }
+      ]
+    }
+  ],
+  "2025-02": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 27270,
+          "startDate": "2025-02-03",
+          "endDate": "2025-03-02"
+        },
+        {
+          "igdbId": 204618,
+          "startDate": "2025-02-03",
+          "endDate": "2025-03-02"
+        },
+        {
+          "igdbId": 168717,
+          "startDate": "2025-02-03",
+          "endDate": "2025-03-02"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 26192,
+          "startDate": "2025-02-04"
+        },
+        {
+          "igdbId": 115289,
+          "startDate": "2025-02-05"
+        },
+        {
+          "igdbId": 117927,
+          "startDate": "2025-02-05"
+        },
+        {
+          "igdbId": 119342,
+          "startDate": "2025-02-06"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-02-18"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-02-25"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 125250,
+          "startDate": "2025-02-06",
+          "endDate": "2025-02-13"
+        },
+        {
+          "igdbId": 80961,
+          "startDate": "2025-02-13",
+          "endDate": "2025-02-20"
+        },
+        {
+          "igdbId": 99302,
+          "startDate": "2025-02-20",
+          "endDate": "2025-02-27"
+        }
+      ]
+    }
+  ],
+  "2025-01": [
+    {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 219442,
+          "startDate": "2025-01-07",
+          "endDate": "2025-02-03"
+        },
+        {
+          "igdbId": 287849,
+          "startDate": "2025-01-07",
+          "endDate": "2025-02-03"
+        },
+        {
+          "igdbId": 152127,
+          "startDate": "2025-01-07",
+          "endDate": "2025-02-03"
+        }
+      ]
+    },
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 355,
+          "startDate": "2025-01-14"
+        },
+        {
+          "igdbId": 126459,
+          "startDate": "2025-01-08"
+        },
+        {
+          "igdbId": 152246,
+          "startDate": "2025-01-22"
+        },
+        {
+          "igdbId": 119342,
+          "startDate": "2025-01-22"
+        },
+        {
+          "igdbId": 295199,
+          "startDate": "2025-01-28"
+        },
+        {
+          "igdbId": 335439,
+          "startDate": "2025-01-28"
+        }
+      ]
+    },
+    {
+      "provider": "epic-games-store",
+      "games": [
+        {
+          "igdbId": 80961,
+          "startDate": "2025-01-01",
+          "endDate": "2025-01-08"
+        },
+        {
+          "igdbId": 252828,
+          "startDate": "2025-01-08",
+          "endDate": "2025-01-15"
+        },
+        {
+          "igdbId": 99302,
+          "startDate": "2025-01-30",
+          "endDate": "2025-02-06"
+        }
       ]
     }
   ]
