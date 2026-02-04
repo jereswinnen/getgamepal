@@ -38,12 +38,52 @@
           "startDate": "2026-02-03"
         },
         {
+          "igdbId": 317317,
+          "startDate": "2026-02-03"
+        },
+        {
           "igdbId": 262664,
           "startDate": "2026-02-05"
         },
         {
+          "igdbId": 342382,
+          "startDate": "2026-02-05"
+        },
+        {
+          "igdbId": 351133,
+          "startDate": "2026-02-05"
+        },
+        {
+          "igdbId": 347674,
+          "startDate": "2026-02-10"
+        },
+        {
+          "igdbId": 377236,
+          "startDate": "2026-02-12"
+        },
+        {
+          "igdbId": 346940,
+          "startDate": "2026-02-12"
+        },
+        {
+          "igdbId": 310885,
+          "startDate": "2026-02-12"
+        },
+        {
           "igdbId": 348166,
           "startDate": "2026-02-13"
+        },
+        {
+          "igdbId": 4843,
+          "startDate": "2026-02-13"
+        },
+        {
+          "igdbId": 152202,
+          "startDate": "2026-02-17"
+        },
+        {
+          "igdbId": 135994,
+          "startDate": "2026-02-17"
         },
         {
           "igdbId": 328347,
@@ -58,6 +98,21 @@
           "igdbId": 143078,
           "startDate": "2026-01-29",
           "endDate": "2026-02-05"
+        },
+        {
+          "igdbId": 143078,
+          "startDate": "2026-02-01",
+          "endDate": "2026-02-05"
+        },
+        {
+          "igdbId": 225426,
+          "startDate": "2026-02-05",
+          "endDate": "2026-02-12"
+        },
+        {
+          "igdbId": 294955,
+          "startDate": "2026-02-05",
+          "endDate": "2026-02-12"
         }
       ]
     }
