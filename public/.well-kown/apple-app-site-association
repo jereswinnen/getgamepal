@@ -1,0 +1,11 @@
+{
+    "applinks": {
+      "apps": [],
+      "details": [
+        {
+          "appID": "RR8592KUY3.jeremys.GamePal",
+          "paths": ["/sharing/*"]
+        }
+      ]
+    }
+  }
