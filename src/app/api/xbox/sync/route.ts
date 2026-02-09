@@ -26,6 +26,9 @@ interface XboxSyncResult {
   igdbMatch: GameResult | null;
 }
 
+// Allow up to 60s for large libraries (Hobby plan max)
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest) {
   if (!OPENXBL_API_KEY) {
     return NextResponse.json(
@@ -45,14 +48,15 @@ export async function POST(request: NextRequest) {
 
   try {
     // 1. Look up XUID by gamertag
+    const openxblHeaders = {
+      "X-Authorization": OPENXBL_API_KEY,
+      "Accept": "application/json",
+      "Accept-Language": "en-US",
+    };
+
     const searchResponse = await fetch(
       `https://xbl.io/api/v2/search/${encodeURIComponent(gamertag.trim())}`,
-      {
-        headers: {
-          "X-Authorization": OPENXBL_API_KEY,
-          Accept: "application/json",
-        },
-      }
+      { headers: openxblHeaders }
     );
 
     if (!searchResponse.ok) {
@@ -85,12 +89,7 @@ export async function POST(request: NextRequest) {
     // 2. Fetch title history
     const titlesResponse = await fetch(
       `https://xbl.io/api/v2/player/titleHistory/${xuid}`,
-      {
-        headers: {
-          "X-Authorization": OPENXBL_API_KEY,
-          Accept: "application/json",
-        },
-      }
+      { headers: openxblHeaders }
     );
 
     if (!titlesResponse.ok) {
