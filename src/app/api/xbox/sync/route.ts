@@ -94,7 +94,14 @@ export async function POST(request: NextRequest) {
     );
 
     if (!titlesResponse.ok) {
-      throw new Error(`OpenXBL title history failed: ${titlesResponse.status}`);
+      const errorBody = await titlesResponse.text();
+      console.error(
+        `OpenXBL title history failed: ${titlesResponse.status}`,
+        errorBody
+      );
+      throw new Error(
+        `OpenXBL title history failed: ${titlesResponse.status} - ${errorBody}`
+      );
     }
 
     const titlesData = await titlesResponse.json();
