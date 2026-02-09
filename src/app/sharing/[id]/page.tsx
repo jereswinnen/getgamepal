@@ -71,15 +71,14 @@ export default async function SharingPage({
 }) {
   const { id } = await params;
 
-  // Render a real page so crawlers see the OG meta tags (server-side redirect
-  // would cause them to follow the redirect and scrape the App Store instead).
-  // Users without the app get redirected to the App Store via client-side script.
+  // Render a real page so crawlers see the OG meta tags. Facebook's crawler
+  // follows both server-side redirects AND meta refresh, but does not execute
+  // JavaScript — so a JS redirect is the only way to keep crawlers on this page.
   return (
-    <html>
-      <head>
-        <meta httpEquiv="refresh" content={`0;url=${APP_STORE_URL}`} />
-      </head>
-      <body />
-    </html>
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `window.location.replace("${APP_STORE_URL}")`,
+      }}
+    />
   );
 }
