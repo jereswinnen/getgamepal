@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import GameCover from "@/components/GameCover";
 import { format } from "date-fns";
+import { getFranchiseById } from "@/lib/franchises";
 
 // Define the Game type
 interface Game {
@@ -44,27 +45,8 @@ async function getFranchiseData(
   franchiseId: string
 ): Promise<FranchiseData | null> {
   try {
-    // Get the base URL for the API request
-    const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-    const host = process.env.VERCEL_URL || "localhost:3000";
-    const baseUrl = `${protocol}://${host}`;
-
-    // Use our dedicated franchise endpoint
-    const response = await fetch(`${baseUrl}/api/franchise/${franchiseId}`, {
-      next: { revalidate: 3600 }, // Revalidate every hour at most
-    });
-
-    if (!response.ok) {
-      console.error(
-        `Failed to fetch franchise data: ${response.status} ${response.statusText}`
-      );
-      return null;
-    }
-
-    const data = await response.json();
-
-    // Return the franchise or null if no franchise was found
-    return data.error ? null : data;
+    const data = await getFranchiseById(franchiseId);
+    return data as FranchiseData | null;
   } catch (error) {
     console.error("Error fetching franchise data:", error);
     return null;

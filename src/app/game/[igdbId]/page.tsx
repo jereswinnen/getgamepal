@@ -3,6 +3,7 @@ import GamePageContent from "@/components/GamePageContent";
 import { Game } from "@/types/game";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+import { getGameById } from "@/lib/games";
 
 // Generate metadata for the page dynamically
 export async function generateMetadata({
@@ -56,27 +57,8 @@ async function checkLibraryStatus(igdbId: string): Promise<boolean> {
 // Function to get the game data from IGDB
 async function getGameData(igdbId: string): Promise<Game | null> {
   try {
-    // Get the base URL for the API request
-    const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-    const host = process.env.VERCEL_URL || "localhost:3000";
-    const baseUrl = `${protocol}://${host}`;
-
-    // Use our dedicated cached game endpoint
-    const response = await fetch(`${baseUrl}/api/game/${igdbId}`, {
-      next: { revalidate: 3600 }, // Revalidate every hour at most
-    });
-
-    if (!response.ok) {
-      console.error(
-        `Failed to fetch game data: ${response.status} ${response.statusText}`
-      );
-      return null;
-    }
-
-    const data = await response.json();
-
-    // Return the game or null if no game was found
-    return data.error ? null : data;
+    const data = await getGameById(igdbId);
+    return data as Game | null;
   } catch (error) {
     console.error("Error fetching game data:", error);
     return null;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import GameCover from "@/components/GameCover";
+import { getPopularGames } from "@/lib/games";
 
 export const metadata: Metadata = {
   title: "Popular Games",
@@ -17,37 +18,8 @@ interface Game {
   };
 }
 
-// Function to get popular games from IGDB
-async function getPopularGames(): Promise<Game[]> {
-  try {
-    // Get the base URL for the API request
-    const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-    const host = process.env.VERCEL_URL || "localhost:3000";
-    const baseUrl = `${protocol}://${host}`;
-
-    // Make the request to our own API endpoint
-    const response = await fetch(`${baseUrl}/api/v4/games`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain",
-      },
-      body: `fields name, cover.url;
-       where rating > 80 & cover != null;
-       sort rating desc;
-       limit 12;`,
-    });
-
-    const data = await response.json();
-
-    return data || [];
-  } catch (error) {
-    console.error("Error fetching popular games:", error);
-    return [];
-  }
-}
-
 export default async function GamesPage() {
-  const games = await getPopularGames();
+  const games: Game[] = await getPopularGames();
 
   return (
     <div className="max-w-6xl mx-auto">
