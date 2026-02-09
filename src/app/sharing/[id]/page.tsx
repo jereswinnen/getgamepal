@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { queryIGDB } from "@/lib/igdb/client";
 import { GameResult } from "@/lib/igdb/types";
 
@@ -63,6 +62,8 @@ export async function generateMetadata({
   };
 }
 
+const APP_STORE_URL = "https://apps.apple.com/us/app/gamepal/id6563138879";
+
 export default async function SharingPage({
   params,
 }: {
@@ -70,7 +71,15 @@ export default async function SharingPage({
 }) {
   const { id } = await params;
 
-  // If the app didn't intercept this Universal Link, the user doesn't have GamePal.
-  // Redirect to the App Store.
-  redirect("https://apps.apple.com/us/app/gamepal/id6563138879");
+  // Render a real page so crawlers see the OG meta tags (server-side redirect
+  // would cause them to follow the redirect and scrape the App Store instead).
+  // Users without the app get redirected to the App Store via client-side script.
+  return (
+    <html>
+      <head>
+        <meta httpEquiv="refresh" content={`0;url=${APP_STORE_URL}`} />
+      </head>
+      <body />
+    </html>
+  );
 }
