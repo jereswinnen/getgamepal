@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryIGDB } from "@/lib/igdb/client";
-import type { GameResult } from "@/lib/igdb/types";
 
 const OPENXBL_API_KEY = process.env.OPENXBL_API_KEY;
 
@@ -12,22 +10,7 @@ interface OpenXBLTitle {
   titleHistory?: {
     lastTimePlayed?: string;
   };
-  achievement?: {
-    currentAchievements?: number;
-    totalAchievements?: number;
-    currentGamerscore?: number;
-    totalGamerscore?: number;
-    progressPercentage?: number;
-  };
 }
-
-interface XboxSyncResult {
-  xboxName: string;
-  igdbMatch: GameResult | null;
-}
-
-// Allow up to 60s for large libraries (Hobby plan max)
-export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   if (!OPENXBL_API_KEY) {
@@ -46,14 +29,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const openxblHeaders = {
+    "X-Authorization": OPENXBL_API_KEY,
+    Accept: "application/json",
+    "Accept-Language": "en-US",
+  };
+
   try {
     // 1. Look up XUID by gamertag
-    const openxblHeaders = {
-      "X-Authorization": OPENXBL_API_KEY,
-      "Accept": "application/json",
-      "Accept-Language": "en-US",
-    };
-
     const searchResponse = await fetch(
       `https://xbl.io/api/v2/search/${encodeURIComponent(gamertag.trim())}`,
       { headers: openxblHeaders }
@@ -106,68 +89,20 @@ export async function POST(request: NextRequest) {
     const titlesData = await titlesResponse.json();
     const titles: OpenXBLTitle[] = titlesData.titles ?? [];
 
-    if (titles.length === 0) {
-      return NextResponse.json({
-        gamertag,
-        games: [],
-        matched: 0,
-        total: 0,
-      });
-    }
-
-    // 3. Match each Xbox title with IGDB
-    // Xbox platform IDs in IGDB: 49 = Xbox One, 169 = Xbox Series X|S, 12 = Xbox 360
-    const xboxPlatformIds = [12, 49, 169];
-    const results: XboxSyncResult[] = [];
-
-    // Process in batches to respect IGDB rate limits (4 req/sec)
-    const BATCH_SIZE = 4;
-    for (let i = 0; i < titles.length; i += BATCH_SIZE) {
-      const batch = titles.slice(i, i + BATCH_SIZE);
-
-      const batchResults = await Promise.all(
-        batch.map(async (title) => {
-          try {
-            // Search IGDB by name, filtered to Xbox platforms
-            const query = `search "${title.name.replace(/"/g, '\\"')}";
-fields id,name,cover.url,platforms.name,platforms.id,first_release_date,release_dates.date,release_dates.platform.name,genres.name,genres.slug;
-where platforms = (${xboxPlatformIds.join(",")});
-limit 1;`;
-
-            const matches = await queryIGDB<GameResult[]>("games", query);
-            return {
-              xboxName: title.name,
-              igdbMatch: matches.length > 0 ? matches[0] : null,
-            };
-          } catch (error) {
-            console.error(`IGDB match failed for "${title.name}":`, error);
-            return {
-              xboxName: title.name,
-              igdbMatch: null,
-            };
-          }
-        })
-      );
-
-      results.push(...batchResults);
-
-      // Wait 1 second between batches to respect rate limit
-      if (i + BATCH_SIZE < titles.length) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      }
-    }
-
-    // 4. Return only matched games (with IGDB data)
-    const matched = results.filter((r) => r.igdbMatch !== null);
+    // 3. Return Xbox game list (no IGDB matching — iOS app handles that)
+    const games = titles.map((title) => ({
+      name: title.name,
+      xboxTitleId: title.titleId,
+      imageUrl: title.displayImage,
+      devices: title.devices,
+      lastPlayed: title.titleHistory?.lastTimePlayed,
+    }));
 
     return NextResponse.json({
       gamertag,
-      games: matched.map((r) => r.igdbMatch),
-      matched: matched.length,
-      total: titles.length,
-      unmatched: results
-        .filter((r) => r.igdbMatch === null)
-        .map((r) => r.xboxName),
+      xuid,
+      games,
+      total: games.length,
     });
   } catch (error) {
     console.error("Xbox sync error:", error);
