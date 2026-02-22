@@ -2,54 +2,60 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { IconBrandApple, IconBrandThreads } from "@tabler/icons-react";
+import { hero } from "@/data/homepage";
 
 export default function HomepageHero() {
   return (
-    <section className="col-span-full grid grid-cols-subgrid py-12 md:py-0 md:min-h-screen gap-18 md:gap-12 items-center justify-center">
-      <section className="col-span-full md:col-span-3 flex flex-col gap-6">
-        <header className="flex flex-col gap-2">
-          <h1 className="text-6xl font-black tracking-tight">GamePal</h1>
-          <p className="text-2xl text-muted-foreground">
-            The perfect sidekick for your gaming adventures, designed to elevate
-            your gaming experience and help you keep track of your ever-growing
-            collection.
-          </p>
-        </header>
-        <aside className="flex gap-2">
-          <Button>
-            <Link
-              href="https://apple.co/4gUqHBR"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1"
-            >
-              <IconBrandApple size={16} />
-              Download the App
-            </Link>
-          </Button>
-          <Button variant="outline">
-            <Link
-              href="https://www.threads.net/@gamepalapp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1"
-            >
-              <IconBrandThreads size={16} />
-              Follow on Threads
-            </Link>
-          </Button>
-        </aside>
-      </section>
-      <section className="col-span-full md:col-span-3">
+    <section className="col-span-full flex flex-col items-center text-center gap-8 py-16 md:py-24">
+      <div className="flex flex-col items-center gap-4">
         <Image
-          src="/GamePalHeroiPhone@2x.png"
-          alt="GamePal"
-          width={800}
-          height={1125}
-          quality={90}
-          priority
+          src={hero.appIconPath}
+          alt="GamePal app icon"
+          width={80}
+          height={80}
         />
-      </section>
+        <h1 className="text-6xl md:text-8xl font-black tracking-tight">
+          {hero.title}
+        </h1>
+        <p className="text-2xl md:text-3xl text-muted-foreground">
+          {hero.subtitle}
+        </p>
+      </div>
+
+      <aside className="flex gap-2">
+        <Button asChild>
+          <Link
+            href={hero.cta.appStore.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1"
+          >
+            <IconBrandApple size={16} />
+            {hero.cta.appStore.label}
+          </Link>
+        </Button>
+        <Button variant="outline" asChild>
+          <Link
+            href={hero.cta.threads.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1"
+          >
+            <IconBrandThreads size={16} />
+            {hero.cta.threads.label}
+          </Link>
+        </Button>
+      </aside>
+
+      <Image
+        src={hero.heroImagePath}
+        alt="GamePal app screenshots"
+        width={1200}
+        height={800}
+        quality={90}
+        priority
+        className="w-full max-w-5xl"
+      />
     </section>
   );
 }
