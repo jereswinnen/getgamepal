@@ -8,14 +8,12 @@ export default function HomepageFeaturesGrid() {
         {features.map((feature) => (
           <div
             key={feature.id}
-            className="flex flex-col gap-3 rounded-3xl bg-muted/50 p-8 md:p-10"
+            className="flex flex-col gap-3 rounded-3xl bg-muted/50 p-8"
           >
-            <h3 className="text-2xl md:text-3xl font-bold tracking-tight">
-              {feature.title}
-            </h3>
-            <p className="text-muted-foreground leading-relaxed">
+            <h3 className="text-xl tracking-tight text-muted-foreground">
+              <b className="text-primary font-bold">{feature.title}. </b>
               {feature.description}
-            </p>
+            </h3>
             {feature.imageUrl && (
               <div className="relative mt-4 aspect-video overflow-hidden rounded-2xl">
                 <Image

@@ -1,4 +1,19 @@
 {
+  "2026-03": [
+    {
+      "provider": "xbox-game-pass",
+      "games": [
+        {
+          "igdbId": 340017,
+          "startDate": "2026-03-03"
+        },
+        {
+          "igdbId": 298526,
+          "startDate": "2026-03-03"
+        }
+      ]
+    }
+  ],
   "2026-02": [
     {
       "provider": "playstation-plus",
@@ -86,8 +101,32 @@
           "startDate": "2026-02-17"
         },
         {
+          "igdbId": 342901,
+          "startDate": "2026-02-17"
+        },
+        {
           "igdbId": 328347,
           "startDate": "2026-02-19"
+        },
+        {
+          "igdbId": 119402,
+          "startDate": "2026-02-19"
+        },
+        {
+          "igdbId": 329146,
+          "startDate": "2026-02-19"
+        },
+        {
+          "igdbId": 309862,
+          "startDate": "2026-02-24"
+        },
+        {
+          "igdbId": 335662,
+          "startDate": "2026-02-25"
+        },
+        {
+          "igdbId": 252839,
+          "startDate": "2026-02-26"
         }
       ]
     },
