@@ -1,6 +1,32 @@
 {
   "2026-03": [
     {
+      "provider": "playstation-plus",
+      "tier": "essential",
+      "games": [
+        {
+          "igdbId": 138950,
+          "startDate": "2026-03-03",
+          "endDate": "2026-04-07"
+        },
+        {
+          "igdbId": 152243,
+          "startDate": "2026-03-03",
+          "endDate": "2026-04-07"
+        },
+        {
+          "igdbId": 328079,
+          "startDate": "2026-03-03",
+          "endDate": "2026-04-07"
+        },
+        {
+          "igdbId": 306484,
+          "startDate": "2026-03-03",
+          "endDate": "2026-04-07"
+        }
+      ]
+    },
+    {
       "provider": "xbox-game-pass",
       "games": [
         {
