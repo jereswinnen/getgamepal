@@ -7,11 +7,13 @@ export const discoverConfig: DiscoverConfig = {
     1372, // Counter-Strike
     11642, // crossword
     17269, // Solitaire
-    341660, // Subway Surfers
+    341660, //
     133890, // Roblox
-    186090, // game-name
-    379730, // game-name
-    176057, // game-name
+    186090, //
+    379730, //
+    176057, //
+    373844, // Popy Playtime: Chapter 5
+    6166, // Subway Surfers
   ],
   curatedSeriesIDs: [
     8988, // The Legend of Zelda: Breath of the Wild
@@ -53,5 +55,6 @@ export const discoverConfig: DiscoverConfig = {
     2810, // Forza Horizon
     448, // Forza Motorsport
     7988, // Dragon Quest
+    83, // Resident Evil
   ],
 };
